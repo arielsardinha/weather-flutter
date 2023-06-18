@@ -32,40 +32,39 @@ class _CustonDrawerState extends State<CustonDrawer> {
             children: [
               ListTile(
                 dense: true,
-                title: const Text('dark'),
+                title: Text('dark'.i18n()),
                 onTap: () {
                   setTheme(ThemeMode.dark);
                 },
               ),
               ListTile(
                 dense: true,
-                title: const Text('light'),
+                title: Text('light'.i18n()),
                 onTap: () {
                   setTheme(ThemeMode.light);
                 },
               ),
               ListTile(
                 dense: true,
-                title: const Text('system'),
+                title: Text('system'.i18n()),
                 onTap: () {
-                  Themes.setThemeMode(ThemeMode.system);
                   setTheme(ThemeMode.system);
                 },
               ),
             ],
           ),
           ExpansionTile(
-            title: const Text('languagem'),
+            title: Text('languagem'.i18n()),
             leading: const Icon(Icons.language_outlined),
             children: [
               ListTile(
                 dense: true,
-                title: const Text('portugues'),
+                title: Text('portugues'.i18n()),
                 onTap: () {},
               ),
               ListTile(
                 dense: true,
-                title: const Text('english'),
+                title: Text('english'.i18n()),
                 onTap: () {},
               ),
             ],

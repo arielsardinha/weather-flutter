@@ -1,7 +1,5 @@
 {
     "locale": "en-US",
-    "weather_lang": "pt_us",
-    "theme": "theme",
     "enter_city": "Enter a city...",
     "device_location_error": "Please, enable the device's location",
     "initial_message": "Please, enter a city to see the weather.",
@@ -13,5 +11,13 @@
     "max": "Max",
     "location_service_disabled": "Location service is disabled.",
     "location_permission_denied": "Location permission was denied.",
-    "location_permission_denied_forever": "Location permission is permanently denied, please allow it in settings."
+    "location_permission_denied_forever": "Location permission is permanently denied, please allow it in settings.",
+    "theme": "theme",
+    "dark": "dark",
+    "light": "light",
+    "system": "system",
+    "languagem": "language",
+    "portugues": "Portuguese",
+    "english": "English",
+    "weather_lang": "en_us"
 }

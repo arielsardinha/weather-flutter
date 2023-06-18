@@ -1,7 +1,6 @@
 {
     "locale": "pt-BR",
     "weather_lang": "pt_br",
-    "theme": "tema",
     "enter_city": "Digite uma cidade...",
     "device_location_error": "Por favor, ative a localização do dispositivo",
     "initial_message": "Por favor, digite uma cidade para ver o clima.",
@@ -13,5 +12,12 @@
     "max": "Max",
     "location_service_disabled": "O serviço de localização está desativado.",
     "location_permission_denied": "A permissão de localização foi negada.",
-    "location_permission_denied_forever": "A permissão de localização foi permanentemente negada, por favor, permita nas configurações."
+    "location_permission_denied_forever": "A permissão de localização foi permanentemente negada, por favor, permita nas configurações.",
+    "theme": "tema",
+    "dark": "escuro",
+    "light": "claro",
+    "system": "sistema",
+    "languagem": "idioma",
+    "portugues": "português",
+    "english": "inglês"
 }
