@@ -1,3 +1,4 @@
+import 'package:open_weather_map/data/entities/lat_lng.dart';
 import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/repository/weather/weather_repository.dart';
 
@@ -6,7 +7,11 @@ final class WeatherGetAll {
 
   WeatherGetAll({required WeatherRepositoryImpl repositoryWeather})
       : _repositoryWeather = repositoryWeather;
-  Future<Weather> exec({required String search}) async {
-    return _repositoryWeather.getAll(search: search);
+  Future<Weather> exec({String? search, LatLng? latLng}) async {
+    return _repositoryWeather.getAll(
+      search: search,
+      lat: latLng?.lat.toString(),
+      long: latLng?.lng.toString(),
+    );
   }
 }

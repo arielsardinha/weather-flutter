@@ -1,7 +1,10 @@
+import 'package:open_weather_map/data/entities/lat_lng.dart';
+
 sealed class WeatherEvent {}
 
 final class WeatherLoadEvent extends WeatherEvent {
-  final String message;
+  final LatLng? latLong;
+  final String? message;
 
-  WeatherLoadEvent({required this.message});
+  WeatherLoadEvent({this.message, this.latLong});
 }

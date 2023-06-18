@@ -24,9 +24,15 @@ class WeatherBloc {
       try {
         _outputStreamController.add(WeatherLoadState());
         final message = event.message;
-        final weather = await _weatherGetAll.exec(search: message);
+        final latLong = event.latLong;
+        final weather =
+            await _weatherGetAll.exec(search: message, latLng: latLong);
         _outputStreamController.add(WeatherSuccessState(weather: weather));
       } catch (e) {
+        if (event.latLong != null) {
+          _outputStreamController.add(WeatherInitialState());
+          return;
+        }
         _outputStreamController.add(WeatherErroState(message: e.toString()));
       }
     }

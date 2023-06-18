@@ -6,8 +6,10 @@ import 'package:open_weather_map/app/components/buttons/custon_text_form_field.d
 import 'package:open_weather_map/data/blocs/weather/weather_bloc.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_events.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_states.dart';
+import 'package:open_weather_map/data/entities/lat_lng.dart';
 import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/utils/mixins/debounce_mixin.dart';
+import 'package:open_weather_map/data/utils/mixins/geolocator_mixin.dart';
 
 class HomeView extends StatefulWidget {
   final WeatherBloc bloc;
@@ -17,8 +19,21 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> with DebouncerMixin {
+class _HomeViewState extends State<HomeView>
+    with DebouncerMixin, GeolocatorMixin {
   final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    (() async {
+      final position =
+          await determinePosition().catchError((e) => POSITION_DEFAULT_ERRO);
+      final latLng = LatLng(lat: position.latitude, lng: position.longitude);
+      widget.bloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
+    })();
+    super.initState();
+  }
+
   @override
   void dispose() {
     widget.bloc.inputWeather.close();
@@ -144,19 +159,20 @@ class InfoWeather extends StatelessWidget {
                 formattedDate,
                 style: theme.textTheme.titleMedium,
               ),
-              Row(
-                children: [
-                  Text(
-                    weather.name,
-                    style: theme.textTheme.titleMedium,
-                  ),
-                  const SizedBox(width: 16),
-                  Image.network(
-                    "https://flagsapi.com/${weather.sys.country}/flat/64.png",
-                    width: 25,
-                  )
-                ],
-              ),
+              if (weather.sys.country != null)
+                Row(
+                  children: [
+                    Text(
+                      weather.name,
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(width: 16),
+                    Image.network(
+                      "https://flagsapi.com/${weather.sys.country}/flat/64.png",
+                      width: 25,
+                    )
+                  ],
+                ),
               Row(
                 children: [
                   const Icon(
@@ -204,7 +220,7 @@ class InfoWeather extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            "${weather.main.temp.toStringAsFixed(1)}°C",
+            "${weather.main.temp?.toStringAsFixed(1)}°C",
             style: theme.textTheme.displayLarge,
           ),
         ],
