@@ -37,8 +37,8 @@ class _HomeViewState extends State<HomeView>
       widget.bloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
+        const SnackBar(
+          content: Text('Por favor, ative a localização do dispositivo'),
           backgroundColor: Colors.red,
         ),
       );
