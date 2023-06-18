@@ -9,6 +9,10 @@ final class WeatherInitialState extends WeatherState {
   WeatherInitialState() : super(weather: null);
 }
 
+final class WeatherLoadState extends WeatherState {
+  WeatherLoadState() : super(weather: null);
+}
+
 final class WeatherSuccessState extends WeatherState {
   WeatherSuccessState({required super.weather});
 }

@@ -22,6 +22,7 @@ class WeatherBloc {
   Future<void> _mapEventToState(WeatherEvent event) async {
     if (event is WeatherLoadEvent) {
       try {
+        _outputStreamController.add(WeatherLoadState());
         final message = event.message;
         final weather = await _weatherGetAll.exec(search: message);
         _outputStreamController.add(WeatherSuccessState(weather: weather));

@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
@@ -17,8 +15,8 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
           .get(Request(path: '/weather?q=$search&units=metric&lang=pt_br'));
 
       return Weather.fromJson(response.data);
-    } on DioException catch (e) {
-      throw 'Erro ao buscar dados ${e.message}';
+    } catch (_) {
+      throw 'Não foi possível encontrar o clima de uma cidade com este nome.';
     }
   }
 }
