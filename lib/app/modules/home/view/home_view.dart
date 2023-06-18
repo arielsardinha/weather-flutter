@@ -19,67 +19,71 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with DebouncerMixin {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     widget.bloc.inputWeather.close();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SafeArea(
-            child: Column(
+      body: StreamBuilder<WeatherState>(
+          stream: widget.bloc.stream,
+          builder: (context, snapshot) {
+            final weather = snapshot.data?.weather;
+
+            return Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustonTextFormField(
-                    onChanged: (value) {
-                      debounce(() {
-                        widget.bloc.inputWeather
-                            .add(WeatherLoadEvent(message: value));
-                      }, cancel: value.isEmpty);
-                    },
-                    label: 'Digite uma cidade...',
-                    suffixIcon: const Icon(Icons.search),
+                Image.network(
+                  'https://source.unsplash.com/featured/?${weather?.weather[0].description ?? 'doubt'}',
+                  fit: BoxFit.cover,
+                  height: double.infinity,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                ),
+                SafeArea(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: CustonTextFormField(
+                          onChanged: (value) {
+                            debounce(() {
+                              widget.bloc.inputWeather
+                                  .add(WeatherLoadEvent(message: value));
+                            }, cancel: value.isEmpty);
+                          },
+                          label: 'Digite uma cidade...',
+                          suffixIcon: const Icon(Icons.search),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Divider(),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      switch (snapshot.data) {
+                        WeatherErroState(message: final err) =>
+                          InfoErro(erro: err),
+                        WeatherSuccessState(weather: final weather!) =>
+                          InfoWeather(weather: weather),
+                        WeatherInitialState() => const SizedBox(),
+                        WeatherLoadState() ||
+                        _ =>
+                          const CircularProgressIndicator.adaptive(),
+                      },
+                    ],
                   ),
                 ),
-                const SizedBox(
-                  height: 24,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Divider(),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                StreamBuilder<WeatherState>(
-                  stream: widget.bloc.stream,
-                  builder: (context, snapshot) {
-                    return switch (snapshot.data) {
-                      WeatherErroState(message: final err) =>
-                        InfoErro(erro: err),
-                      WeatherSuccessState(weather: final weather!) =>
-                        InfoWeather(weather: weather),
-                      WeatherInitialState() => const SizedBox(),
-                      WeatherLoadState() ||
-                      _ =>
-                        const CircularProgressIndicator.adaptive(),
-                    };
-                  },
-                ),
               ],
-            ),
-          ),
-        ],
-      ),
+            );
+          }),
     );
   }
 }
