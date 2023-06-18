@@ -277,7 +277,7 @@ class InfoWeather extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            "${weather.main.temp?.toStringAsFixed(1)}°C",
+            "${weather.main.temp?.toStringAsFixed(1) ?? '-'}°C",
             style: theme.textTheme.displayLarge,
           ),
           const SizedBox(height: 8),
