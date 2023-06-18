@@ -25,6 +25,19 @@ class _HomeViewState extends State<HomeView>
   final _focusNode = FocusNode();
   final textCtl = TextEditingController();
 
+  String getDayPart() {
+    var hour = DateTime.now().hour;
+    if (hour < 6) {
+      return "night";
+    } else if (hour < 12) {
+      return "morning";
+    } else if (hour < 18) {
+      return "afternoon";
+    } else {
+      return "night";
+    }
+  }
+
   @override
   void initState() {
     (() async {
@@ -73,7 +86,7 @@ class _HomeViewState extends State<HomeView>
               children: [
                 if (weather != null)
                   Image.network(
-                    'https://source.unsplash.com/featured/?${weather.weather[0].description}',
+                    'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},${weather.sys.country}',
                     fit: BoxFit.cover,
                     height: double.infinity,
                     width: double.infinity,
