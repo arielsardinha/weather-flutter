@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/themes/theme.dart';
+import 'package:open_weather_map/i18n/localization.dart';
 
 class CustonDrawer extends StatefulWidget {
   const CustonDrawer({super.key});
@@ -60,12 +61,16 @@ class _CustonDrawerState extends State<CustonDrawer> {
               ListTile(
                 dense: true,
                 title: Text('portugues'.i18n()),
-                onTap: () {},
+                onTap: () {
+                  Localization.setLocale(const Locale('pt', 'BR'));
+                },
               ),
               ListTile(
                 dense: true,
                 title: Text('english'.i18n()),
-                onTap: () {},
+                onTap: () {
+                  Localization.setLocale(const Locale('en', 'US'));
+                },
               ),
             ],
           ),

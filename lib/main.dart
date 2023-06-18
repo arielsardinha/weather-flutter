@@ -4,6 +4,7 @@ import 'package:open_weather_map/app/router/pages.dart';
 import 'package:open_weather_map/app/router/routers.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/themes/theme.dart';
+import 'package:open_weather_map/i18n/localization.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,7 @@ class _MyAppState extends State<MyApp> {
     LocalJsonLocalization.delegate.directories = ['lib/i18n'];
 
     return AnimatedBuilder(
-      animation: Themes.theme,
+      animation: Listenable.merge([Themes.theme, Localization.locale]),
       builder: (context, snapshot) {
         return MaterialApp(
           title: 'weather',
@@ -37,6 +38,7 @@ class _MyAppState extends State<MyApp> {
             Locale('pt', 'BR'),
             Locale('en', 'US'),
           ],
+          locale: Localization.locale.value,
           theme: Themes.themeDataLight,
           darkTheme: Themes.themeDataDark,
           initialRoute: Routes.HOME,
