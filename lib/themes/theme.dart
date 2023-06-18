@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 sealed class Themes {
-  static var theme = ValueNotifier(ThemeMode.system);
+  static final theme = ValueNotifier(ThemeMode.system);
 
   static void setThemeMode(ThemeMode theme) {
     Themes.theme.value = theme;

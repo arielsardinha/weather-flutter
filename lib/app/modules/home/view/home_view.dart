@@ -15,6 +15,7 @@ import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/utils/mixins/date_formate.dart';
 import 'package:open_weather_map/data/utils/mixins/debounce_mixin.dart';
 import 'package:open_weather_map/data/utils/mixins/geolocator_mixin.dart';
+import 'package:open_weather_map/data/utils/temperature/temperature.dart';
 
 class HomeView extends StatefulWidget {
   final WeatherBloc weatherBloc;
@@ -48,13 +49,23 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void initState() {
+    Temperature.temperature.addListener(() {
+      getWeatherByLatLng();
+    });
+
     (() async {
       final position =
           await determinePosition().whenComplete(() => POSITION_DEFAULT_ERRO);
       if (position == POSITION_DEFAULT_ERRO) return;
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng,units: ''));
-      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng,units: ''));
+      widget.weatherBloc.input.add(WeatherLoadEvent(
+        latLong: latLng,
+        units: Temperature.temperature.value.name,
+      ));
+      widget.forecastBloc.input.add(ForecastLoadEvent(
+        latLng: latLng,
+        units: Temperature.temperature.value.name,
+      ));
     })();
     super.initState();
   }
@@ -63,8 +74,12 @@ class _HomeViewState extends State<HomeView>
     try {
       final position = await determinePosition();
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng,units: ''));
-      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng,units: ''));
+      widget.weatherBloc.input.add(WeatherLoadEvent(
+          latLong: latLng, units: Temperature.temperature.value.name));
+      widget.forecastBloc.input.add(ForecastLoadEvent(
+        latLng: latLng,
+        units: Temperature.temperature.value.name,
+      ));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -118,16 +133,20 @@ class _HomeViewState extends State<HomeView>
                         controller: textCtl,
                         onChanged: (value) {
                           debounce(() {
-                            widget.weatherBloc.input
-                                .add(WeatherLoadEvent(message: value,units: ''));
+                            widget.weatherBloc.input.add(WeatherLoadEvent(
+                              message: value,
+                              units: Temperature.temperature.value.name,
+                            ));
                             if (snapshot.data is WeatherSuccessState) {
                               final weather =
                                   snapshot.data as WeatherSuccessState;
                               final LatLng latLng = LatLng(
                                   lat: weather.weather.coord.lat,
                                   lng: weather.weather.coord.lon);
-                              widget.forecastBloc.input
-                                  .add(ForecastLoadEvent(latLng: latLng,units: ''));
+                              widget.forecastBloc.input.add(ForecastLoadEvent(
+                                latLng: latLng,
+                                units: Temperature.temperature.value.name,
+                              ));
                             }
 
                             if (value.isNotEmpty) {

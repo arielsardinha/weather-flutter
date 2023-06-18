@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
+import 'package:open_weather_map/data/utils/enuns/temperature_enum.dart';
+import 'package:open_weather_map/data/utils/temperature/temperature.dart';
 import 'package:open_weather_map/themes/theme.dart';
 import 'package:open_weather_map/i18n/localization.dart';
 
@@ -81,17 +83,23 @@ class _CustonDrawerState extends State<CustonDrawer> {
               ListTile(
                 dense: true,
                 title: Text('Celsius'.i18n()),
-                onTap: () {},
+                onTap: () {
+                  Temperature.setTemperature(TemperatureEnum.metric);
+                },
               ),
               ListTile(
                 dense: true,
                 title: Text('Fahrenheit'.i18n()),
-                onTap: () {},
+                onTap: () {
+                  Temperature.setTemperature(TemperatureEnum.imperial);
+                },
               ),
               ListTile(
                 dense: true,
                 title: Text('Kelvin'.i18n()),
-                onTap: () {},
+                onTap: () {
+                  Temperature.setTemperature(TemperatureEnum.standard);
+                },
               ),
             ],
           ),
