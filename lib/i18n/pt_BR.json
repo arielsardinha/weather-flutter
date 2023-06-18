@@ -1,0 +1,14 @@
+{
+    "enter_city": "Digite uma cidade...",
+    "device_location_error": "Por favor, ative a localização do dispositivo",
+    "initial_message": "Por favor, digite uma cidade para ver o clima.",
+    "date_format": "EEEE, d MMM, yyyy",
+    "humidity": "Umidade",
+    "wind": "Vento",
+    "visibility": "Visibilidade",
+    "min": "Min",
+    "max": "Max",
+    "location_service_disabled": "O serviço de localização está desativado.",
+    "location_permission_denied": "A permissão de localização foi negada.",
+    "location_permission_denied_forever": "A permissão de localização foi permanentemente negada, por favor, permita nas configurações."
+}

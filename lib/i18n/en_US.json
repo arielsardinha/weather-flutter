@@ -1,0 +1,14 @@
+{
+    "enter_city": "Enter a city...",
+    "device_location_error": "Please, enable the device's location",
+    "initial_message": "Please, enter a city to see the weather.",
+    "date_format": "EEEE, d MMM, yyyy",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "visibility": "Visibility",
+    "min": "Min",
+    "max": "Max",
+    "location_service_disabled": "Location service is disabled.",
+    "location_permission_denied": "Location permission was denied.",
+    "location_permission_denied_forever": "Location permission is permanently denied, please allow it in settings."
+}

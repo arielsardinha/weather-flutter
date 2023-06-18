@@ -2,6 +2,7 @@
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:open_weather_map/app/components/buttons/custon_text_form_field.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_bloc.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_events.dart';
@@ -43,8 +44,8 @@ class _HomeViewState extends State<HomeView>
       widget.bloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Por favor, ative a localização do dispositivo'),
+        SnackBar(
+          content: Text('device_location_error'.i18n()),
           backgroundColor: Colors.red,
         ),
       );
@@ -98,7 +99,7 @@ class _HomeViewState extends State<HomeView>
                               }
                             }, cancel: value.isEmpty);
                           },
-                          label: 'Digite uma cidade...',
+                          label: '${'enter_city'.i18n()}...',
                           suffixIcon: IconButton(
                             onPressed: () {
                               getWeatherByLatLng();
@@ -126,9 +127,8 @@ class _HomeViewState extends State<HomeView>
                           InfoText(msg: err),
                         WeatherSuccessState(weather: final weather!) =>
                           InfoWeather(weather: weather),
-                        WeatherInitialState() => const InfoText(
-                            msg:
-                                'Por favor, digite uma cidade para ver o clima.'),
+                        WeatherInitialState() =>
+                          InfoText(msg: 'initial_message'.i18n()),
                         WeatherLoadState() ||
                         _ =>
                           const CircularProgressIndicator.adaptive(),
@@ -170,7 +170,7 @@ class InfoWeather extends StatelessWidget {
     final theme = Theme.of(context);
     final today = DateTime.now();
 
-    final formattedDate = DateFormat('EEEE, d MMM, yyyy').format(today);
+    final formattedDate = DateFormat('date_format'.i18n()).format(today);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -212,7 +212,7 @@ class InfoWeather extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    "Humidity: ${weather.main.humidity}%",
+                    "${'humidity'.i18n()}: ${weather.main.humidity}%",
                     style: theme.textTheme.titleMedium,
                   ),
                 ],
@@ -227,7 +227,7 @@ class InfoWeather extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    "Wind: ${weather.wind.speed} m/s",
+                    "${'wind'.i18n()}: ${weather.wind.speed} m/s",
                     style: theme.textTheme.titleMedium,
                   ),
                 ],
@@ -242,7 +242,7 @@ class InfoWeather extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    "Visibilidade: ${weather.visibility}",
+                    "${'visibility'.i18n()}: ${weather.visibility}",
                     style: theme.textTheme.titleMedium,
                   ),
                   PopupMenuButton(
@@ -286,12 +286,12 @@ class InfoWeather extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Min: ${weather.main.tempMin?.toStringAsFixed(1)}°C",
+                  "${'min'.i18n()}: ${weather.main.tempMin?.toStringAsFixed(1)}°C",
                   style: theme.textTheme.titleMedium,
                 ),
                 const SizedBox(width: 16),
                 Text(
-                  "Max: ${weather.main.tempMax?.toStringAsFixed(1)}°C",
+                  "${'max'.i18n()}: ${weather.main.tempMax?.toStringAsFixed(1)}°C",
                   style: theme.textTheme.titleMedium,
                 ),
               ],

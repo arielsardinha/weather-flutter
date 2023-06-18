@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:geolocator/geolocator.dart';
+import 'package:localization/localization.dart';
 
 mixin GeolocatorMixin {
   final POSITION_DEFAULT_ERRO = Position(
@@ -20,21 +21,21 @@ mixin GeolocatorMixin {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return Future.error("locationServicesAreDisabled");
+      return Future.error('location_service_disabled'.i18n());
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error("locationPermissionsAreDenied");
+        return Future.error('location_permission_denied'.i18n());
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'locationPermissionsArePermanentlyDeniedWeCannotRequestPermissions');
+      return Future.error('location_permission_denied_forever'.i18n());
     }
+
     return Geolocator.getCurrentPosition();
   }
 }
