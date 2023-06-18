@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:open_weather_map/app/modules/home/factories/home_factry.dart';
+import 'package:open_weather_map/app/modules/home/factory/home_factory.dart';
 import 'package:open_weather_map/app/modules/home/view/home_view.dart';
 import 'package:open_weather_map/app/router/routers.dart';
 
