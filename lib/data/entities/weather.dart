@@ -1,6 +1,6 @@
 class Weather {
   final List<WeatherElement> weather;
-
+  final int visibility;
   final Main main;
 
   final Wind wind;
@@ -15,6 +15,7 @@ class Weather {
     required this.wind,
     required this.sys,
     required this.name,
+    required this.visibility,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
@@ -24,15 +25,8 @@ class Weather {
         wind: Wind.fromJson(json["wind"]),
         sys: Sys.fromJson(json["sys"]),
         name: json["name"],
+        visibility: json["visibility"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "weather": List<dynamic>.from(weather.map((x) => x.toJson())),
-        "main": main.toJson(),
-        "wind": wind.toJson(),
-        "sys": sys.toJson(),
-        "name": name,
-      };
 }
 
 class Main {
@@ -49,11 +43,6 @@ class Main {
         temp: json["temp"]?.toDouble(),
         humidity: json["humidity"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "temp": temp,
-        "humidity": humidity,
-      };
 }
 
 class Sys {
@@ -66,10 +55,6 @@ class Sys {
   factory Sys.fromJson(Map<String, dynamic> json) => Sys(
         country: json["country"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "country": country,
-      };
 }
 
 class WeatherElement {
@@ -88,12 +73,6 @@ class WeatherElement {
         description: json["description"],
         icon: json["icon"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "main": main,
-        "description": description,
-        "icon": icon,
-      };
 }
 
 class Wind {
@@ -106,8 +85,4 @@ class Wind {
   factory Wind.fromJson(Map<String, dynamic> json) => Wind(
         speed: json["speed"]?.toDouble(),
       );
-
-  Map<String, dynamic> toJson() => {
-        "speed": speed,
-      };
 }

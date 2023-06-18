@@ -26,7 +26,13 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void initState() {
-    getWeatherByLatLng();
+    (() async {
+      final position =
+          await determinePosition().whenComplete(() => POSITION_DEFAULT_ERRO);
+      if (position == POSITION_DEFAULT_ERRO) return;
+      final latLng = LatLng(lat: position.latitude, lng: position.longitude);
+      widget.bloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
+    })();
     super.initState();
   }
 
@@ -222,6 +228,21 @@ class InfoWeather extends StatelessWidget {
                   ),
                   Text(
                     "Wind: ${weather.wind.speed} m/s",
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.visibility,
+                    size: 16,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "Visibilidade: ${weather.visibility} metros",
                     style: theme.textTheme.titleMedium,
                   ),
                 ],
