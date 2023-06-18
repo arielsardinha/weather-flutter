@@ -80,7 +80,7 @@ class _HomeViewState extends State<HomeView>
                     alignment: Alignment.center,
                   ),
                 SafeArea(
-                  child: Column(
+                  child: ListView(
                     children: [
                       const SizedBox(
                         height: 16,
@@ -129,9 +129,9 @@ class _HomeViewState extends State<HomeView>
                           InfoWeather(weather: weather),
                         WeatherInitialState() =>
                           InfoText(msg: 'initial_message'.i18n()),
-                        WeatherLoadState() ||
-                        _ =>
-                          const CircularProgressIndicator.adaptive(),
+                        WeatherLoadState() || _ => const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          ),
                       },
                     ],
                   ),
