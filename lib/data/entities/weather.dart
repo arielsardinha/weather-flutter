@@ -1,12 +1,9 @@
 class Weather {
   final List<WeatherElement> weather;
-  final int visibility;
+  final int _visibility;
   final Main main;
-
   final Wind wind;
-
   final Sys sys;
-
   final String name;
 
   Weather({
@@ -15,8 +12,32 @@ class Weather {
     required this.wind,
     required this.sys,
     required this.name,
-    required this.visibility,
-  });
+    required int visibility,
+  }) : _visibility = visibility;
+
+  String get visibility {
+    if (_visibility >= 10000) {
+      return 'Excelente';
+    } else if (_visibility >= 5000) {
+      return 'Boa';
+    } else if (_visibility >= 2000) {
+      return 'Moderada';
+    } else {
+      return 'Baixa';
+    }
+  }
+
+  String get visibilityMessage {
+    if (_visibility >= 10000) {
+      return 'Condições de estrada claras, dirija como de costume.';
+    } else if (_visibility >= 5000) {
+      return 'Condições de estrada decentes, mas fique atento.';
+    } else if (_visibility >= 2000) {
+      return 'Visibilidade reduzida, por favor, diminua a velocidade e mantenha uma distância segura dos outros veículos.';
+    } else {
+      return 'Visibilidade muito baixa, é altamente recomendável não dirigir, se possível.';
+    }
+  }
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         weather: List<WeatherElement>.from(
@@ -31,17 +52,22 @@ class Weather {
 
 class Main {
   final double? temp;
-
+  final double? tempMin;
+  final double? tempMax;
   final int humidity;
 
   Main({
     required this.temp,
     required this.humidity,
+    required this.tempMin,
+    required this.tempMax,
   });
 
   factory Main.fromJson(Map<String, dynamic> json) => Main(
         temp: json["temp"]?.toDouble(),
         humidity: json["humidity"],
+        tempMin: json["temp_min"]?.toDouble(),
+        tempMax: json["temp_max"]?.toDouble(),
       );
 }
 

@@ -242,8 +242,21 @@ class InfoWeather extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    "Visibilidade: ${weather.visibility} metros",
+                    "Visibilidade: ${weather.visibility}",
                     style: theme.textTheme.titleMedium,
+                  ),
+                  PopupMenuButton(
+                    icon: Icon(
+                      Icons.error,
+                      color: theme.colorScheme.primary,
+                    ),
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          child: Text(weather.visibilityMessage),
+                        ),
+                      ];
+                    },
                   ),
                 ],
               ),
@@ -267,6 +280,22 @@ class InfoWeather extends StatelessWidget {
             "${weather.main.temp?.toStringAsFixed(1)}°C",
             style: theme.textTheme.displayLarge,
           ),
+          const SizedBox(height: 8),
+          if (weather.main.tempMin != null && weather.main.tempMax != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Min: ${weather.main.tempMin?.toStringAsFixed(1)}°C",
+                  style: theme.textTheme.titleMedium,
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  "Max: ${weather.main.tempMax?.toStringAsFixed(1)}°C",
+                  style: theme.textTheme.titleMedium,
+                ),
+              ],
+            ),
         ],
       ),
     );
