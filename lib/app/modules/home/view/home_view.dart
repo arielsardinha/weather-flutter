@@ -22,6 +22,7 @@ class _HomeViewState extends State<HomeView>
     with DebouncerMixin, GeolocatorMixin {
   final _focusNode = FocusNode();
   final textCtl = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   String getDayPart() {
     var hour = DateTime.now().hour;
@@ -75,6 +76,8 @@ class _HomeViewState extends State<HomeView>
     final theme = Theme.of(context);
 
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const Drawer(),
       body: StreamBuilder<WeatherState>(
         stream: widget.bloc.stream,
         builder: (context, snapshot) {
@@ -84,7 +87,7 @@ class _HomeViewState extends State<HomeView>
             children: [
               if (weather != null)
                 Image.network(
-                  'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},${weather.sys.country}',
+                  'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},landscape',
                   fit: BoxFit.cover,
                   height: double.infinity,
                   width: double.infinity,
@@ -111,10 +114,20 @@ class _HomeViewState extends State<HomeView>
                           }, cancel: value.isEmpty);
                         },
                         label: '${'enter_city'.i18n()}...',
-                        suffixIcon: IconButton(
+                        prefixIcon: IconButton(
                           onPressed: () {
-                            getWeatherByLatLng();
+                            _scaffoldKey.currentState?.openDrawer();
+                          },
+                          icon: Icon(
+                            Icons.menu,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () async {
+                            await getWeatherByLatLng();
                             textCtl.clear();
+                            _focusNode.unfocus();
                           },
                           icon: Icon(
                             Icons.location_on_outlined,
