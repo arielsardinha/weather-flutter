@@ -22,16 +22,27 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView>
     with DebouncerMixin, GeolocatorMixin {
   final _focusNode = FocusNode();
+  final textCtl = TextEditingController();
 
   @override
   void initState() {
-    (() async {
-      final position =
-          await determinePosition().catchError((e) => POSITION_DEFAULT_ERRO);
+    getWeatherByLatLng();
+    super.initState();
+  }
+
+  Future<void> getWeatherByLatLng() async {
+    try {
+      final position = await determinePosition();
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
       widget.bloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
-    })();
-    super.initState();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -43,6 +54,8 @@ class _HomeViewState extends State<HomeView>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: StreamBuilder<WeatherState>(
           stream: widget.bloc.stream,
@@ -69,6 +82,7 @@ class _HomeViewState extends State<HomeView>
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: CustonTextFormField(
                           focusNode: _focusNode,
+                          controller: textCtl,
                           onChanged: (value) {
                             debounce(() {
                               widget.bloc.inputWeather
@@ -79,7 +93,16 @@ class _HomeViewState extends State<HomeView>
                             }, cancel: value.isEmpty);
                           },
                           label: 'Digite uma cidade...',
-                          suffixIcon: const Icon(Icons.search),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              getWeatherByLatLng();
+                              textCtl.clear();
+                            },
+                            icon: Icon(
+                              Icons.location_on_outlined,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(
