@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:localization/localization.dart';
 import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
@@ -14,7 +15,7 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
   @override
   Future<Weather> getAll({String? search, String? lat, String? long}) async {
     try {
-      final query = {'units': 'metric'};
+      final query = {'units': 'metric', 'lang': 'weather_lang'.i18n()};
       if (search != null) {
         query.addAll({"q": search});
       }

@@ -1,6 +1,3 @@
-// ignore_for_file: must_be_immutable
-import 'package:intl/intl.dart';
-
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/app/components/buttons/custon_text_form_field.dart';
@@ -9,6 +6,7 @@ import 'package:open_weather_map/data/blocs/weather/weather_events.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_states.dart';
 import 'package:open_weather_map/data/entities/lat_lng.dart';
 import 'package:open_weather_map/data/entities/weather.dart';
+import 'package:open_weather_map/data/utils/mixins/date_formate.dart';
 import 'package:open_weather_map/data/utils/mixins/debounce_mixin.dart';
 import 'package:open_weather_map/data/utils/mixins/geolocator_mixin.dart';
 
@@ -173,7 +171,7 @@ class InfoText extends StatelessWidget {
   }
 }
 
-class InfoWeather extends StatelessWidget {
+class InfoWeather extends StatelessWidget with DateFormatMixin {
   final Weather weather;
 
   const InfoWeather({Key? key, required this.weather}) : super(key: key);
@@ -182,8 +180,6 @@ class InfoWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final today = DateTime.now();
-
-    final formattedDate = DateFormat('date_format'.i18n()).format(today);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -198,7 +194,7 @@ class InfoWeather extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                formattedDate,
+                formatDateFromDateTime(today),
                 style: theme.textTheme.titleMedium,
               ),
               if (weather.sys.country != null)

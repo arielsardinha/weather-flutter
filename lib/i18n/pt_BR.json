@@ -1,4 +1,6 @@
 {
+    "locale": "pt-BR",
+    "weather_lang": "pt_br",
     "enter_city": "Digite uma cidade...",
     "device_location_error": "Por favor, ative a localização do dispositivo",
     "initial_message": "Por favor, digite uma cidade para ver o clima.",
