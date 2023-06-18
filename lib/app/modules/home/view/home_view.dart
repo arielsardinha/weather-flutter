@@ -53,8 +53,8 @@ class _HomeViewState extends State<HomeView>
           await determinePosition().whenComplete(() => POSITION_DEFAULT_ERRO);
       if (position == POSITION_DEFAULT_ERRO) return;
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
       widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng));
+      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
     })();
     super.initState();
   }
@@ -63,8 +63,8 @@ class _HomeViewState extends State<HomeView>
     try {
       final position = await determinePosition();
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
       widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng));
+      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -123,13 +123,11 @@ class _HomeViewState extends State<HomeView>
                             if (snapshot.data is WeatherSuccessState) {
                               final weather =
                                   snapshot.data as WeatherSuccessState;
-                              debounce(() {
-                                final LatLng latLng = LatLng(
-                                    lat: weather.weather.coord.lat,
-                                    lng: weather.weather.coord.lon);
-                                widget.forecastBloc.input
-                                    .add(ForecastLoadEvent(latLng: latLng));
-                              });
+                              final LatLng latLng = LatLng(
+                                  lat: weather.weather.coord.lat,
+                                  lng: weather.weather.coord.lon);
+                              widget.forecastBloc.input
+                                  .add(ForecastLoadEvent(latLng: latLng));
                             }
 
                             if (value.isNotEmpty) {
