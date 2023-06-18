@@ -38,7 +38,6 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
 
   @override
   Future<Forecast> getForecast({String? lat, String? long}) async {
-    // New method
     try {
       final query = {'units': 'metric', 'lang': 'weather_lang'.i18n()};
 

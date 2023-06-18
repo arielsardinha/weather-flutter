@@ -1,5 +1,6 @@
 {
     "locale": "en-US",
+    "weather_lang": "en_us",
     "enter_city": "Enter a city...",
     "device_location_error": "Please, enable the device's location",
     "initial_message": "Please, enter a city to see the weather.",
@@ -19,5 +20,11 @@
     "languagem": "language",
     "portugues": "Portuguese",
     "english": "English",
-    "weather_lang": "en_us"
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
 }

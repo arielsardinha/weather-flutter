@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/app/components/buttons/custon_text_form_field.dart';
 import 'package:open_weather_map/app/components/layout/custon_drawer.dart';
 import 'package:open_weather_map/data/blocs/forecast/forecast_bloc.dart';
 import 'package:open_weather_map/data/blocs/forecast/forecast_event.dart';
+import 'package:open_weather_map/data/blocs/forecast/forecast_state.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_bloc.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_events.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_states.dart';
+import 'package:open_weather_map/data/entities/forecast.dart';
 import 'package:open_weather_map/data/entities/lat_lng.dart';
 import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/utils/mixins/date_formate.dart';
@@ -16,7 +19,8 @@ import 'package:open_weather_map/data/utils/mixins/geolocator_mixin.dart';
 class HomeView extends StatefulWidget {
   final WeatherBloc weatherBloc;
   final ForecastBloc forecastBloc;
-  const HomeView({Key? key, required this.weatherBloc, required this.forecastBloc})
+  const HomeView(
+      {Key? key, required this.weatherBloc, required this.forecastBloc})
       : super(key: key);
 
   @override
@@ -50,7 +54,7 @@ class _HomeViewState extends State<HomeView>
       if (position == POSITION_DEFAULT_ERRO) return;
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
       widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
-      widget.weatherBloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
+      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng));
     })();
     super.initState();
   }
@@ -59,7 +63,8 @@ class _HomeViewState extends State<HomeView>
     try {
       final position = await determinePosition();
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.weatherBloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
+      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
+      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -73,7 +78,7 @@ class _HomeViewState extends State<HomeView>
   @override
   void dispose() {
     widget.weatherBloc.dispose();
-
+    widget.forecastBloc.dispose();
     super.dispose();
   }
 
@@ -87,18 +92,19 @@ class _HomeViewState extends State<HomeView>
       body: StreamBuilder<WeatherState>(
         stream: widget.weatherBloc.stream,
         builder: (context, snapshot) {
-          final weather = snapshot.data?.weather;
-
           return Stack(
             children: [
-              if (weather != null)
-                Image.network(
-                  'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},landscape',
-                  fit: BoxFit.cover,
-                  height: double.infinity,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                ),
+              if (snapshot.data is WeatherSuccessState)
+                switch (snapshot.data) {
+                  WeatherSuccessState(weather: final weather) => Image.network(
+                      'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},landscape',
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    ),
+                  _ => const SizedBox()
+                },
               SafeArea(
                 child: ListView(
                   children: [
@@ -112,8 +118,20 @@ class _HomeViewState extends State<HomeView>
                         controller: textCtl,
                         onChanged: (value) {
                           debounce(() {
-                            widget.weatherBloc.inputWeather
+                            widget.weatherBloc.input
                                 .add(WeatherLoadEvent(message: value));
+                            if (snapshot.data is WeatherSuccessState) {
+                              final weather =
+                                  snapshot.data as WeatherSuccessState;
+                              debounce(() {
+                                final LatLng latLng = LatLng(
+                                    lat: weather.weather.coord.lat,
+                                    lng: weather.weather.coord.lon);
+                                widget.forecastBloc.input
+                                    .add(ForecastLoadEvent(latLng: latLng));
+                              });
+                            }
+
                             if (value.isNotEmpty) {
                               _focusNode.unfocus();
                             }
@@ -155,14 +173,29 @@ class _HomeViewState extends State<HomeView>
                     switch (snapshot.data) {
                       WeatherErroState(message: final err) =>
                         InfoText(msg: err),
-                      WeatherSuccessState(weather: final weather!) =>
-                        InfoWeather(weather: weather),
                       WeatherInitialState() =>
                         InfoText(msg: 'initial_message'.i18n()),
+                      WeatherSuccessState(weather: final weather) =>
+                        InfoWeather(weather: weather),
                       WeatherLoadState() || _ => const Center(
                           child: CircularProgressIndicator.adaptive(),
                         ),
                     },
+                    StreamBuilder<ForecastState>(
+                      stream: widget.forecastBloc.stream,
+                      builder: (context, snapshot) {
+                        return switch (snapshot.data) {
+                          ForecastErrorState(message: final err) =>
+                            InfoText(msg: err),
+                          ForecastSuccessState(forecast: final forecast) =>
+                            InfoForecast(forecast: forecast),
+                          ForecastInitialState() ||
+                          ForecastLoadState() ||
+                          _ =>
+                            const SizedBox(),
+                        };
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -330,6 +363,77 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
               ],
             ),
         ],
+      ),
+    );
+  }
+}
+
+class InfoForecast extends StatelessWidget {
+  final Forecast forecast;
+
+  const InfoForecast({Key? key, required this.forecast}) : super(key: key);
+
+  String getDayOfWeek(int timeStamp) {
+    var date = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
+    return DateFormat('EEEE').format(date).toLowerCase().i18n();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      height: 120,
+      margin: const EdgeInsets.only(top: 16, right: 16, left: 16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.background.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: theme.colorScheme.onBackground,
+          width: 1,
+        ),
+      ),
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: forecast.afternoonForecasts.length,
+        itemBuilder: (context, index) {
+          final forecastItem = forecast.afternoonForecasts[index];
+          final isFirst = forecastItem == forecast.afternoonForecasts.first;
+          final isLast = forecastItem == forecast.afternoonForecasts.last;
+          return Padding(
+            padding: EdgeInsets.only(
+              right: isFirst ? 8 : 16,
+              left: isLast ? 8 : 16,
+              top: 16,
+              bottom: 16,
+            ),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  getDayOfWeek(forecastItem.dt),
+                  style: theme.textTheme.titleSmall,
+                ),
+                Image.network(
+                  'https://openweathermap.org/img/wn/${forecastItem.weather[0].icon}.png',
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '${forecastItem.main.tempMin.toStringAsFixed(0)}°',
+                      style: theme.textTheme.titleSmall,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      '${forecastItem.main.tempMax.toStringAsFixed(0)}°',
+                      style: theme.textTheme.titleSmall,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }
