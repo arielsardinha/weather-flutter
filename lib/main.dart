@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:open_weather_map/app/router/pages.dart';
 import 'package:open_weather_map/app/router/routers.dart';
 import 'package:localization/localization.dart';
+import 'package:open_weather_map/themes/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,10 +34,8 @@ class _MyAppState extends State<MyApp> {
         Locale('pt', 'BR'),
         Locale('en', 'US'),
       ],
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: CustomTheme.themeDataLight,
+      darkTheme: CustomTheme.themeDataDark,
       initialRoute: Routes.HOME,
       routes: AppRoutes.routes,
     );

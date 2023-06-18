@@ -76,80 +76,81 @@ class _HomeViewState extends State<HomeView>
 
     return Scaffold(
       body: StreamBuilder<WeatherState>(
-          stream: widget.bloc.stream,
-          builder: (context, snapshot) {
-            final weather = snapshot.data?.weather;
+        stream: widget.bloc.stream,
+        builder: (context, snapshot) {
+          final weather = snapshot.data?.weather;
 
-            return Stack(
-              children: [
-                if (weather != null)
-                  Image.network(
-                    'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},${weather.sys.country}',
-                    fit: BoxFit.cover,
-                    height: double.infinity,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                  ),
-                SafeArea(
-                  child: ListView(
-                    children: [
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: CustonTextFormField(
-                          focusNode: _focusNode,
-                          controller: textCtl,
-                          onChanged: (value) {
-                            debounce(() {
-                              widget.bloc.inputWeather
-                                  .add(WeatherLoadEvent(message: value));
-                              if (value.isNotEmpty) {
-                                _focusNode.unfocus();
-                              }
-                            }, cancel: value.isEmpty);
+          return Stack(
+            children: [
+              if (weather != null)
+                Image.network(
+                  'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},${weather.sys.country}',
+                  fit: BoxFit.cover,
+                  height: double.infinity,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                ),
+              SafeArea(
+                child: ListView(
+                  children: [
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: CustonTextFormField(
+                        focusNode: _focusNode,
+                        controller: textCtl,
+                        onChanged: (value) {
+                          debounce(() {
+                            widget.bloc.inputWeather
+                                .add(WeatherLoadEvent(message: value));
+                            if (value.isNotEmpty) {
+                              _focusNode.unfocus();
+                            }
+                          }, cancel: value.isEmpty);
+                        },
+                        label: '${'enter_city'.i18n()}...',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            getWeatherByLatLng();
+                            textCtl.clear();
                           },
-                          label: '${'enter_city'.i18n()}...',
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              getWeatherByLatLng();
-                              textCtl.clear();
-                            },
-                            icon: Icon(
-                              Icons.location_on_outlined,
-                              color: theme.colorScheme.primary,
-                            ),
+                          icon: Icon(
+                            Icons.location_on_outlined,
+                            color: theme.colorScheme.primary,
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Divider(),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      switch (snapshot.data) {
-                        WeatherErroState(message: final err) =>
-                          InfoText(msg: err),
-                        WeatherSuccessState(weather: final weather!) =>
-                          InfoWeather(weather: weather),
-                        WeatherInitialState() =>
-                          InfoText(msg: 'initial_message'.i18n()),
-                        WeatherLoadState() || _ => const Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          ),
-                      },
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    switch (snapshot.data) {
+                      WeatherErroState(message: final err) =>
+                        InfoText(msg: err),
+                      WeatherSuccessState(weather: final weather!) =>
+                        InfoWeather(weather: weather),
+                      WeatherInitialState() =>
+                        InfoText(msg: 'initial_message'.i18n()),
+                      WeatherLoadState() || _ => const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        ),
+                    },
+                  ],
                 ),
-              ],
-            );
-          }),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
@@ -287,7 +288,7 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
           const SizedBox(height: 16),
           Text(
             "${weather.main.temp?.toStringAsFixed(1) ?? '-'}°C",
-            style: theme.textTheme.displayLarge,
+            style: theme.textTheme.displayMedium,
           ),
           const SizedBox(height: 8),
           if (weather.main.tempMin != null && weather.main.tempMax != null)
