@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/app/components/buttons/custon_text_form_field.dart';
 import 'package:open_weather_map/app/components/layout/custon_drawer.dart';
+import 'package:open_weather_map/data/blocs/forecast/forecast_bloc.dart';
+import 'package:open_weather_map/data/blocs/forecast/forecast_event.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_bloc.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_events.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_states.dart';
@@ -12,8 +14,10 @@ import 'package:open_weather_map/data/utils/mixins/debounce_mixin.dart';
 import 'package:open_weather_map/data/utils/mixins/geolocator_mixin.dart';
 
 class HomeView extends StatefulWidget {
-  final WeatherBloc bloc;
-  const HomeView({super.key, required this.bloc});
+  final WeatherBloc weatherBloc;
+  final ForecastBloc forecastBloc;
+  const HomeView({Key? key, required this.weatherBloc, required this.forecastBloc})
+      : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -45,7 +49,8 @@ class _HomeViewState extends State<HomeView>
           await determinePosition().whenComplete(() => POSITION_DEFAULT_ERRO);
       if (position == POSITION_DEFAULT_ERRO) return;
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.bloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
+      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
+      widget.weatherBloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
     })();
     super.initState();
   }
@@ -54,7 +59,7 @@ class _HomeViewState extends State<HomeView>
     try {
       final position = await determinePosition();
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.bloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
+      widget.weatherBloc.inputWeather.add(WeatherLoadEvent(latLong: latLng));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -67,7 +72,7 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void dispose() {
-    widget.bloc.inputWeather.close();
+    widget.weatherBloc.dispose();
 
     super.dispose();
   }
@@ -80,7 +85,7 @@ class _HomeViewState extends State<HomeView>
       key: _scaffoldKey,
       drawer: const CustonDrawer(),
       body: StreamBuilder<WeatherState>(
-        stream: widget.bloc.stream,
+        stream: widget.weatherBloc.stream,
         builder: (context, snapshot) {
           final weather = snapshot.data?.weather;
 
@@ -107,7 +112,7 @@ class _HomeViewState extends State<HomeView>
                         controller: textCtl,
                         onChanged: (value) {
                           debounce(() {
-                            widget.bloc.inputWeather
+                            widget.weatherBloc.inputWeather
                                 .add(WeatherLoadEvent(message: value));
                             if (value.isNotEmpty) {
                               _focusNode.unfocus();

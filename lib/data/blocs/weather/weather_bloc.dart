@@ -37,4 +37,9 @@ class WeatherBloc {
       }
     }
   }
+
+  void dispose() {
+    _inputStreamController.close();
+    _outputStreamController.close();
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:localization/localization.dart';
+import 'package:open_weather_map/data/entities/forecast.dart';
 import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
@@ -29,6 +30,28 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
       return Weather.fromJson(response.data);
     } on DioException catch (_) {
       throw 'Não foi possível encontrar o clima de uma cidade com este nome.';
+    } catch (e, s) {
+      log('Erro inesperado', error: e, stackTrace: s);
+      throw 'Erro inesperado!!! Consulte o desenvolvedor';
+    }
+  }
+
+  @override
+  Future<Forecast> getForecast({String? lat, String? long}) async {
+    // New method
+    try {
+      final query = {'units': 'metric', 'lang': 'weather_lang'.i18n()};
+
+      if (lat != null && long != null) {
+        query.addAll({"lat": lat, 'lon': long});
+      }
+      final response =
+          await _httpImpl.get(Request(path: '/forecast', query: query));
+
+      return Forecast.fromJson(
+          response.data); // Convert response to Forecast entity
+    } on DioException catch (_) {
+      throw 'Não foi possível encontrar a previsão do tempo para esta localização.';
     } catch (e, s) {
       log('Erro inesperado', error: e, stackTrace: s);
       throw 'Erro inesperado!!! Consulte o desenvolvedor';
