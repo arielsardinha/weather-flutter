@@ -5,6 +5,6 @@ import 'package:open_weather_map/app/router/routers.dart';
 
 sealed class AppRoutes {
   static final routes = <String, Widget Function(BuildContext)>{
-    Routes.HOME: (context) => HomeView(controller: HomeFactory.controller),
+    Routes.HOME: (context) => HomeView(bloc: HomeFactory.bloc),
   };
 }

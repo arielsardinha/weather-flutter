@@ -15,6 +15,7 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 <!-- dae1320fcc7b39a52af3156300ed10b6 -->
-<!-- 
+<!--
+https://api.openweathermap.org/data/2.5/weather?q=&units=metric&lang=pt_br&appid=dae1320fcc7b39a52af3156300ed10b6
 https://api.openweathermap.org/data/2.5/weather?q=rio&units=metric&lang=pt_br&appid=dae1320fcc7b39a52af3156300ed10b6
  -->
