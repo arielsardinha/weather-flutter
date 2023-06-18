@@ -1,13 +1,16 @@
 import 'package:dio/dio.dart';
+
 import 'package:open_weather_map/data/entities/weather.dart';
 import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
+import 'package:open_weather_map/data/repository/weather/weather_repository.dart';
 
-final class RepositoryWeather {
+final class RepositoryWeather implements WeatherRepositoryImpl {
   final HttpImpl _httpImpl;
 
   RepositoryWeather({required HttpImpl httpImpl}) : _httpImpl = httpImpl;
 
+  @override
   Future<Weather> getAll({required String search}) async {
     try {
       final response = await _httpImpl

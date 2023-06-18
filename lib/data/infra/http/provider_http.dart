@@ -4,10 +4,10 @@ import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
 import 'package:open_weather_map/data/infra/http/response.dart';
 
-final class ProvideroPenweathermap implements HttpImpl {
+final class ProviderOpenweathermap implements HttpImpl {
   final _dio = _dioPackage.Dio();
 
-  ProvideroPenweathermap() {
+  ProviderOpenweathermap() {
     configureDio();
   }
 
