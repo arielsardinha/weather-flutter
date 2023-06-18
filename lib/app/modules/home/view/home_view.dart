@@ -18,6 +18,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with DebouncerMixin {
+  final _focusNode = FocusNode();
   @override
   void dispose() {
     widget.bloc.inputWeather.close();
@@ -35,23 +36,31 @@ class _HomeViewState extends State<HomeView> with DebouncerMixin {
 
             return Stack(
               children: [
-                Image.network(
-                  'https://source.unsplash.com/featured/?${weather?.weather[0].description ?? 'doubt'}',
-                  fit: BoxFit.cover,
-                  height: double.infinity,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                ),
+                if (weather != null)
+                  Image.network(
+                    'https://source.unsplash.com/featured/?${weather.weather[0].description}',
+                    fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                  ),
                 SafeArea(
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: CustonTextFormField(
+                          focusNode: _focusNode,
                           onChanged: (value) {
                             debounce(() {
                               widget.bloc.inputWeather
                                   .add(WeatherLoadEvent(message: value));
+                              if (value.isNotEmpty) {
+                                _focusNode.unfocus();
+                              }
                             }, cancel: value.isEmpty);
                           },
                           label: 'Digite uma cidade...',
@@ -70,10 +79,12 @@ class _HomeViewState extends State<HomeView> with DebouncerMixin {
                       ),
                       switch (snapshot.data) {
                         WeatherErroState(message: final err) =>
-                          InfoErro(erro: err),
+                          InfoText(msg: err),
                         WeatherSuccessState(weather: final weather!) =>
                           InfoWeather(weather: weather),
-                        WeatherInitialState() => const SizedBox(),
+                        WeatherInitialState() => const InfoText(
+                            msg:
+                                'Por favor, digite uma cidade para ver o clima.'),
                         WeatherLoadState() ||
                         _ =>
                           const CircularProgressIndicator.adaptive(),
@@ -88,9 +99,9 @@ class _HomeViewState extends State<HomeView> with DebouncerMixin {
   }
 }
 
-class InfoErro extends StatelessWidget {
-  final String erro;
-  const InfoErro({super.key, required this.erro});
+class InfoText extends StatelessWidget {
+  final String msg;
+  const InfoText({super.key, required this.msg});
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +109,7 @@ class InfoErro extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
-        erro,
+        msg,
         style: theme.textTheme.titleMedium,
       ),
     );
@@ -117,8 +128,13 @@ class InfoWeather extends StatelessWidget {
 
     final formattedDate = DateFormat('EEEE, d MMM, yyyy').format(today);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
         children: [
           Column(
@@ -182,7 +198,8 @@ class InfoWeather extends StatelessWidget {
                 style: theme.textTheme.titleLarge,
               ),
               Image.network(
-                  'https://openweathermap.org/img/wn/${weather.weather[0].icon}.png')
+                'https://openweathermap.org/img/wn/${weather.weather[0].icon}.png',
+              )
             ],
           ),
           const SizedBox(height: 16),

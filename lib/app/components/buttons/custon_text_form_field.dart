@@ -96,6 +96,7 @@ class _CustonTextFormFieldState extends State<CustonTextFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return FocusScope(
       onFocusChange: (value) {
         if (value && widget.onFocus != null) {
@@ -130,7 +131,15 @@ class _CustonTextFormFieldState extends State<CustonTextFormField> {
             onTap: _onTapSuffixIcon(),
             child: _hasInputPassword(),
           ),
-          border: const OutlineInputBorder(),
+          fillColor: theme.colorScheme.background,
+          filled: true,
+          focusColor: theme.colorScheme.onBackground,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: theme.colorScheme.onBackground),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: theme.colorScheme.onBackground),
+          ),
         ),
       ),
     );

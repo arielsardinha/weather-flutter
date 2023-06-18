@@ -29,7 +29,8 @@ final class ProviderOpenweathermap implements HttpImpl {
 
   @override
   Future<Response<T>> get<T>(Request request) async {
-    final response = await _dio.get(request.path);
+    final response =
+        await _dio.get(request.path, queryParameters: request.query);
 
     return Response<T>(data: response.data);
   }

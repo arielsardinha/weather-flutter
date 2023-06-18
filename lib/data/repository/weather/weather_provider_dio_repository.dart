@@ -11,8 +11,8 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
   @override
   Future<Weather> getAll({required String search}) async {
     try {
-      final response = await _httpImpl
-          .get(Request(path: '/weather?q=$search&units=metric&lang=pt_br'));
+      final response = await _httpImpl.get(
+          Request(path: '/weather', query: {"q": search, 'units': 'metric'}));
 
       return Weather.fromJson(response.data);
     } catch (_) {
