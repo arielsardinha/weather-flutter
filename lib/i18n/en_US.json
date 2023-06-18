@@ -1,6 +1,7 @@
 {
     "locale": "en-US",
     "weather_lang": "pt_us",
+    "theme": "theme",
     "enter_city": "Enter a city...",
     "device_location_error": "Please, enable the device's location",
     "initial_message": "Please, enter a city to see the weather.",

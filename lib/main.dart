@@ -21,23 +21,29 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     LocalJsonLocalization.delegate.directories = ['lib/i18n'];
 
-    return MaterialApp(
-      title: 'weather',
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        LocalJsonLocalization.delegate,
-      ],
-      supportedLocales: const [
-        Locale('pt', 'BR'),
-        Locale('en', 'US'),
-      ],
-      theme: CustomTheme.themeDataLight,
-      darkTheme: CustomTheme.themeDataDark,
-      initialRoute: Routes.HOME,
-      routes: AppRoutes.routes,
+    return AnimatedBuilder(
+      animation: Themes.theme,
+      builder: (context, snapshot) {
+        return MaterialApp(
+          title: 'weather',
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            LocalJsonLocalization.delegate,
+          ],
+          supportedLocales: const [
+            Locale('pt', 'BR'),
+            Locale('en', 'US'),
+          ],
+          theme: Themes.themeDataLight,
+          darkTheme: Themes.themeDataDark,
+          initialRoute: Routes.HOME,
+          themeMode: Themes.theme.value,
+          routes: AppRoutes.routes,
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/app/components/buttons/custon_text_form_field.dart';
+import 'package:open_weather_map/app/components/layout/custon_drawer.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_bloc.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_events.dart';
 import 'package:open_weather_map/data/blocs/weather/weather_states.dart';
@@ -77,7 +78,7 @@ class _HomeViewState extends State<HomeView>
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: const Drawer(),
+      drawer: const CustonDrawer(),
       body: StreamBuilder<WeatherState>(
         stream: widget.bloc.stream,
         builder: (context, snapshot) {
@@ -199,8 +200,12 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.6),
+        color: theme.colorScheme.background.withOpacity(0.6),
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: theme.colorScheme.onBackground,
+          width: 1,
+        ),
       ),
       child: Column(
         children: [
@@ -290,7 +295,7 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "${weather.weather[0].main}: ${weather.weather[0].description}",
+                weather.weather[0].description,
                 style: theme.textTheme.titleLarge,
               ),
               Image.network(
