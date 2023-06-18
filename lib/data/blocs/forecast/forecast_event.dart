@@ -4,6 +4,7 @@ abstract class ForecastEvent {}
 
 class ForecastLoadEvent extends ForecastEvent {
   final LatLng? latLng;
+  final String units;
 
-  ForecastLoadEvent({this.latLng});
+  ForecastLoadEvent({this.latLng, required this.units});
 }

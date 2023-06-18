@@ -74,6 +74,27 @@ class _CustonDrawerState extends State<CustonDrawer> {
               ),
             ],
           ),
+          ExpansionTile(
+            title: Text('temperature_unit'.i18n()),
+            leading: const Icon(Icons.thermostat_outlined),
+            children: [
+              ListTile(
+                dense: true,
+                title: Text('Celsius'.i18n()),
+                onTap: () {},
+              ),
+              ListTile(
+                dense: true,
+                title: Text('Fahrenheit'.i18n()),
+                onTap: () {},
+              ),
+              ListTile(
+                dense: true,
+                title: Text('Kelvin'.i18n()),
+                onTap: () {},
+              ),
+            ],
+          ),
         ],
       ),
     );

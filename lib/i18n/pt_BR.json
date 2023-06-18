@@ -26,5 +26,6 @@
     "thursday": "Quinta-feira",
     "friday": "Sexta-feira",
     "saturday": "Sábado",
-    "sunday": "Domingo"
+    "sunday": "Domingo",
+    "temperature_unit": "Unidade de temperatura"
 }

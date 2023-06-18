@@ -53,8 +53,8 @@ class _HomeViewState extends State<HomeView>
           await determinePosition().whenComplete(() => POSITION_DEFAULT_ERRO);
       if (position == POSITION_DEFAULT_ERRO) return;
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng));
-      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
+      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng,units: ''));
+      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng,units: ''));
     })();
     super.initState();
   }
@@ -63,8 +63,8 @@ class _HomeViewState extends State<HomeView>
     try {
       final position = await determinePosition();
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng));
-      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng));
+      widget.weatherBloc.input.add(WeatherLoadEvent(latLong: latLng,units: ''));
+      widget.forecastBloc.input.add(ForecastLoadEvent(latLng: latLng,units: ''));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -119,7 +119,7 @@ class _HomeViewState extends State<HomeView>
                         onChanged: (value) {
                           debounce(() {
                             widget.weatherBloc.input
-                                .add(WeatherLoadEvent(message: value));
+                                .add(WeatherLoadEvent(message: value,units: ''));
                             if (snapshot.data is WeatherSuccessState) {
                               final weather =
                                   snapshot.data as WeatherSuccessState;
@@ -127,7 +127,7 @@ class _HomeViewState extends State<HomeView>
                                   lat: weather.weather.coord.lat,
                                   lng: weather.weather.coord.lon);
                               widget.forecastBloc.input
-                                  .add(ForecastLoadEvent(latLng: latLng));
+                                  .add(ForecastLoadEvent(latLng: latLng,units: ''));
                             }
 
                             if (value.isNotEmpty) {

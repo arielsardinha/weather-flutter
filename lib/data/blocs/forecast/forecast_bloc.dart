@@ -24,7 +24,9 @@ class ForecastBloc {
       try {
         _outputStreamController.add(ForecastLoadState());
         final latLng = event.latLng;
-        final forecast = await _forecastUseCase.exec(latLng: latLng);
+        final units = event.units;
+        final forecast =
+            await _forecastUseCase.exec(latLng: latLng, units: units);
         _outputStreamController.add(ForecastSuccessState(forecast: forecast));
       } catch (e) {
         _outputStreamController.add(ForecastErrorState(message: e.toString()));

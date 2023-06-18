@@ -5,6 +5,7 @@ sealed class WeatherEvent {}
 final class WeatherLoadEvent extends WeatherEvent {
   final LatLng? latLong;
   final String? message;
+  final String units;
 
-  WeatherLoadEvent({this.message, this.latLong});
+  WeatherLoadEvent({this.message, this.latLong, required this.units});
 }

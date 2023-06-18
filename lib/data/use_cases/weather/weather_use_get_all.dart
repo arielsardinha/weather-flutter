@@ -7,11 +7,16 @@ final class WeatherGetAll {
 
   WeatherGetAll({required WeatherRepositoryImpl repositoryWeather})
       : _repositoryWeather = repositoryWeather;
-  Future<Weather> exec({String? search, LatLng? latLng}) async {
+  Future<Weather> exec({
+    String? search,
+    LatLng? latLng,
+    required String units,
+  }) async {
     return _repositoryWeather.getAll(
       search: search,
       lat: latLng?.lat.toString(),
       long: latLng?.lng.toString(),
+      units: units,
     );
   }
 }

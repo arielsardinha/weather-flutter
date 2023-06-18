@@ -7,10 +7,15 @@ final class ForecastUseCaseGetAll {
 
   ForecastUseCaseGetAll({required WeatherRepositoryImpl repositoryWeather})
       : _repositoryWeather = repositoryWeather;
-  Future<Forecast> exec({String? search, LatLng? latLng}) async {
+  Future<Forecast> exec({
+    String? search,
+    LatLng? latLng,
+    required String units,
+  }) async {
     return _repositoryWeather.getForecast(
       lat: latLng?.lat.toString(),
       long: latLng?.lng.toString(),
+      units: units,
     );
   }
 }

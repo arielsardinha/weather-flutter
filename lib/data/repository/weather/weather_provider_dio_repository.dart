@@ -14,9 +14,14 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
   RepositoryWeather({required HttpImpl httpImpl}) : _httpImpl = httpImpl;
 
   @override
-  Future<Weather> getAll({String? search, String? lat, String? long}) async {
+  Future<Weather> getAll({
+    String? search,
+    String? lat,
+    String? long,
+    required String units,
+  }) async {
     try {
-      final query = {'units': 'metric', 'lang': 'weather_lang'.i18n()};
+      final query = {'units': units, 'lang': 'weather_lang'.i18n()};
       if (search != null) {
         query.addAll({"q": search});
       }
@@ -37,9 +42,13 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
   }
 
   @override
-  Future<Forecast> getForecast({String? lat, String? long}) async {
+  Future<Forecast> getForecast({
+    String? lat,
+    String? long,
+    required String units,
+  }) async {
     try {
-      final query = {'units': 'metric', 'lang': 'weather_lang'.i18n()};
+      final query = {'units': units, 'lang': 'weather_lang'.i18n()};
 
       if (lat != null && long != null) {
         query.addAll({"lat": lat, 'lon': long});
