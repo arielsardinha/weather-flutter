@@ -5,6 +5,7 @@ class Weather {
   final Wind wind;
   final Sys sys;
   final String name;
+  final Coord coord;
 
   Weather({
     required this.weather,
@@ -13,6 +14,7 @@ class Weather {
     required this.sys,
     required this.name,
     required int visibility,
+    required this.coord,
   }) : _visibility = visibility;
 
   String get visibility {
@@ -47,7 +49,28 @@ class Weather {
         sys: Sys.fromJson(json["sys"]),
         name: json["name"],
         visibility: json["visibility"],
+        coord: Coord.fromJson(json["coord"]),
       );
+}
+
+class Coord {
+  final double lon;
+  final double lat;
+
+  Coord({
+    required this.lon,
+    required this.lat,
+  });
+
+  factory Coord.fromJson(Map<String, dynamic> json) => Coord(
+        lon: json["lon"]?.toDouble(),
+        lat: json["lat"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "lon": lon,
+        "lat": lat,
+      };
 }
 
 class Main {
