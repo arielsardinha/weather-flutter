@@ -11,7 +11,7 @@ class ForecastBloc {
   final _outputStreamController = StreamController<ForecastState>();
 
   Sink<ForecastEvent> get input => _inputStreamController.sink;
-  Stream<ForecastState> get output => _outputStreamController.stream;
+  Stream<ForecastState> get stream => _outputStreamController.stream;
 
   ForecastBloc({required ForecastUseCaseGetAll forecastUseCase})
       : _forecastUseCase = forecastUseCase {

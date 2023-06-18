@@ -10,7 +10,7 @@ class WeatherBloc {
   final _inputStreamController = StreamController<WeatherEvent>();
   final _outputStreamController = StreamController<WeatherState>();
 
-  Sink<WeatherEvent> get inputWeather => _inputStreamController;
+  Sink<WeatherEvent> get input => _inputStreamController;
   Stream<WeatherState> get stream => _outputStreamController.stream;
 
   WeatherBloc({required WeatherGetAll weatherGetAll})

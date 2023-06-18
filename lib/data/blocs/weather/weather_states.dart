@@ -1,23 +1,23 @@
 import 'package:open_weather_map/data/entities/weather.dart';
 
 sealed class WeatherState {
-  final Weather? weather;
-  WeatherState({required this.weather});
+  WeatherState();
 }
 
 final class WeatherInitialState extends WeatherState {
-  WeatherInitialState() : super(weather: null);
+  WeatherInitialState();
 }
 
 final class WeatherLoadState extends WeatherState {
-  WeatherLoadState() : super(weather: null);
+  WeatherLoadState();
 }
 
 final class WeatherSuccessState extends WeatherState {
-  WeatherSuccessState({required super.weather});
+  final Weather weather;
+  WeatherSuccessState({required this.weather});
 }
 
 final class WeatherErroState extends WeatherState {
   final String message;
-  WeatherErroState({this.message = ''}) : super(weather: null);
+  WeatherErroState({this.message = ''});
 }
