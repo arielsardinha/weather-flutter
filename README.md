@@ -56,7 +56,7 @@ Para executar este projeto Flutter no ambiente local, siga os seguintes passos:
     Navegue até o diretório do projeto clonado e execute o seguinte comando para instalar todas as dependências necessárias listadas no arquivo `pubspec.yaml`:
 
     ```bash
-    cd your-repository
+    cd weather-flutter
     flutter pub get
     ```
 
