@@ -6,4 +6,16 @@ sealed class Temperature {
   static void setTemperature(TemperatureEnum temperature) {
     Temperature.temperature.value = temperature;
   }
+
+  static TemperatureEnum? handleTemperatureStringToEnum(String? temperature) {
+    switch (temperature) {
+      case 'metric':
+        return TemperatureEnum.metric;
+      case 'imperial':
+        return TemperatureEnum.imperial;
+      case 'standard':
+      default:
+        return null;
+    }
+  }
 }

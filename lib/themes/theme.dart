@@ -7,6 +7,18 @@ sealed class Themes {
     Themes.theme.value = theme;
   }
 
+  static ThemeMode? handleThemeFromStringToTheme(String? theme) {
+    switch (theme) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+      default:
+        return null;
+    }
+  }
+
   static final themeDataLight = ThemeData(
     colorScheme: const ColorScheme.light(),
   );

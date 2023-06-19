@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
+import 'package:open_weather_map/data/infra/storage/storage.dart';
 import 'package:open_weather_map/data/utils/enuns/temperature_enum.dart';
 import 'package:open_weather_map/data/utils/temperature/temperature.dart';
 import 'package:open_weather_map/themes/theme.dart';
@@ -13,9 +14,30 @@ class CustonDrawer extends StatefulWidget {
 }
 
 class _CustonDrawerState extends State<CustonDrawer> {
+  final storage = Storage();
   void setTheme(ThemeMode theme) {
     Themes.setThemeMode(theme);
     setState(() {});
+    storage.save(storage: StorageEnum.theme, data: {'name': theme.name});
+  }
+
+  void setLanguagem(Locale locale) {
+    Localization.setLocale(locale);
+    storage.save(
+      storage: StorageEnum.language,
+      data: {
+        'language_code': locale.languageCode,
+        'country_code': locale.countryCode
+      },
+    );
+  }
+
+  void setTemperature(TemperatureEnum temperature) {
+    Temperature.setTemperature(temperature);
+    storage.save(
+      storage: StorageEnum.temperatureUnit,
+      data: {'name': temperature.name},
+    );
   }
 
   @override
@@ -35,6 +57,7 @@ class _CustonDrawerState extends State<CustonDrawer> {
             children: [
               ListTile(
                 dense: true,
+                selected: Themes.theme.value == ThemeMode.dark,
                 title: Text('dark'.i18n()),
                 onTap: () {
                   setTheme(ThemeMode.dark);
@@ -42,6 +65,7 @@ class _CustonDrawerState extends State<CustonDrawer> {
               ),
               ListTile(
                 dense: true,
+                selected: Themes.theme.value == ThemeMode.light,
                 title: Text('light'.i18n()),
                 onTap: () {
                   setTheme(ThemeMode.light);
@@ -49,6 +73,7 @@ class _CustonDrawerState extends State<CustonDrawer> {
               ),
               ListTile(
                 dense: true,
+                selected: Themes.theme.value == ThemeMode.system,
                 title: Text('system'.i18n()),
                 onTap: () {
                   setTheme(ThemeMode.system);
@@ -62,16 +87,18 @@ class _CustonDrawerState extends State<CustonDrawer> {
             children: [
               ListTile(
                 dense: true,
+                selected: Localization.locale.value == const Locale('pt', 'BR'),
                 title: Text('portugues'.i18n()),
                 onTap: () {
-                  Localization.setLocale(const Locale('pt', 'BR'));
+                  setLanguagem(const Locale('pt', 'BR'));
                 },
               ),
               ListTile(
                 dense: true,
+                selected: Localization.locale.value == const Locale('en', 'US'),
                 title: Text('english'.i18n()),
                 onTap: () {
-                  Localization.setLocale(const Locale('en', 'US'));
+                  setLanguagem(const Locale('en', 'US'));
                 },
               ),
             ],
@@ -82,23 +109,29 @@ class _CustonDrawerState extends State<CustonDrawer> {
             children: [
               ListTile(
                 dense: true,
+                selected:
+                    Temperature.temperature.value == TemperatureEnum.metric,
                 title: Text('Celsius'.i18n()),
                 onTap: () {
-                  Temperature.setTemperature(TemperatureEnum.metric);
+                  setTemperature(TemperatureEnum.metric);
                 },
               ),
               ListTile(
                 dense: true,
+                selected:
+                    Temperature.temperature.value == TemperatureEnum.imperial,
                 title: Text('Fahrenheit'.i18n()),
                 onTap: () {
-                  Temperature.setTemperature(TemperatureEnum.imperial);
+                  setTemperature(TemperatureEnum.imperial);
                 },
               ),
               ListTile(
                 dense: true,
+                selected:
+                    Temperature.temperature.value == TemperatureEnum.standard,
                 title: Text('Kelvin'.i18n()),
                 onTap: () {
-                  Temperature.setTemperature(TemperatureEnum.standard);
+                  setTemperature(TemperatureEnum.standard);
                 },
               ),
             ],

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:open_weather_map/app/router/pages.dart';
-import 'package:open_weather_map/app/router/routers.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/themes/theme.dart';
 import 'package:open_weather_map/i18n/localization.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -41,7 +40,6 @@ class _MyAppState extends State<MyApp> {
           locale: Localization.locale.value,
           theme: Themes.themeDataLight,
           darkTheme: Themes.themeDataDark,
-          initialRoute: Routes.HOME,
           themeMode: Themes.theme.value,
           routes: AppRoutes.routes,
         );

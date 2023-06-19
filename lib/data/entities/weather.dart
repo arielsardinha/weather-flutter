@@ -51,6 +51,15 @@ class Weather {
         visibility: json["visibility"],
         coord: Coord.fromJson(json["coord"]),
       );
+
+  Map<String, dynamic> toJson() => {
+        "weather": List<dynamic>.from(weather.map((x) => x.toJson())),
+        "main": main.toJson(),
+        "visibility": visibility,
+        "wind": wind.toJson(),
+        "sys": sys.toJson(),
+        "name": name,
+      };
 }
 
 class Coord {
@@ -92,6 +101,12 @@ class Main {
         tempMin: json["temp_min"]?.toDouble(),
         tempMax: json["temp_max"]?.toDouble(),
       );
+  Map<String, dynamic> toJson() => {
+        "temp": temp,
+        "temp_min": tempMin,
+        "temp_max": tempMax,
+        "humidity": humidity,
+      };
 }
 
 class Sys {
@@ -104,6 +119,9 @@ class Sys {
   factory Sys.fromJson(Map<String, dynamic> json) => Sys(
         country: json["country"],
       );
+  Map<String, dynamic> toJson() => {
+        "country": country,
+      };
 }
 
 class WeatherElement {
@@ -122,6 +140,11 @@ class WeatherElement {
         description: json["description"],
         icon: json["icon"],
       );
+  Map<String, dynamic> toJson() => {
+        "main": main,
+        "description": description,
+        "icon": icon,
+      };
 }
 
 class Wind {
@@ -134,4 +157,7 @@ class Wind {
   factory Wind.fromJson(Map<String, dynamic> json) => Wind(
         speed: json["speed"]?.toDouble(),
       );
+  Map<String, dynamic> toJson() => {
+        "speed": speed,
+      };
 }

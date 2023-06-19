@@ -32,7 +32,9 @@ final class RepositoryWeather implements WeatherRepositoryImpl {
       final response =
           await _httpImpl.get(Request(path: '/weather', query: query));
 
-      return Weather.fromJson(response.data);
+      final weather = Weather.fromJson(response.data);
+
+      return weather;
     } on DioException catch (_) {
       throw 'Não foi possível encontrar o clima de uma cidade com este nome.';
     } catch (e, s) {

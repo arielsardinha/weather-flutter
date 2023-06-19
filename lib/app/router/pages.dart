@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_weather_map/app/modules/home/factory/home_factory.dart';
 import 'package:open_weather_map/app/modules/home/view/home_view.dart';
+import 'package:open_weather_map/app/modules/splash/view/splash_view.dart';
 import 'package:open_weather_map/app/router/routers.dart';
 
 sealed class AppRoutes {
@@ -9,5 +10,6 @@ sealed class AppRoutes {
           weatherBloc: HomeFactory.weatherBloc,
           forecastBloc: HomeFactory.forecastBloc,
         ),
+    Routes.SPLASH: (context) => const SplashView(),
   };
 }
