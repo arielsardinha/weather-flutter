@@ -1,5 +1,12 @@
 # Documentação do Projeto: Desenvolvedor Flutter Pleno
 
+## Observações
+Notei que vocês dão grande ênfase ao BloC. Por isso, desenvolvi o projeto com e sem o uso do pacote, os quais estão em branches distintas.
+
+Com o pacote: flutter_bloc -> [Link para o branch main](https://github.com/arielsardinha/weather-flutter/tree/main)
+Sem o pacote: padrão de projeto BloC -> [Link para o branch developer](https://github.com/arielsardinha/weather-flutter/tree/developer)
+
+
 ## Índice
 
 - [Descrição do Projeto](#descrição-do-projeto)
