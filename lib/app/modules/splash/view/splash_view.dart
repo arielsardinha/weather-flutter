@@ -59,6 +59,20 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/clima_back.jpg',
+            fit: BoxFit.cover,
+            height: double.maxFinite,
+            width: double.maxFinite,
+          ),
+          const Center(
+            child: CircularProgressIndicator.adaptive(),
+          )
+        ],
+      ),
+    );
   }
 }
