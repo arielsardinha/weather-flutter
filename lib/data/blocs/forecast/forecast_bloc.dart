@@ -1,41 +1,25 @@
-import 'dart:async';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather_map/data/blocs/forecast/forecast_event.dart';
 import 'package:open_weather_map/data/blocs/forecast/forecast_state.dart';
 import 'package:open_weather_map/data/use_cases/forecast/forecast_use_case_get_all.dart';
 
-class ForecastBloc {
+class ForecastBloc extends Bloc<ForecastEvent, ForecastState> {
   final ForecastUseCaseGetAll _forecastUseCase;
 
-  final _inputStreamController = StreamController<ForecastEvent>();
-  final _outputStreamController = StreamController<ForecastState>();
-
-  Sink<ForecastEvent> get input => _inputStreamController.sink;
-  Stream<ForecastState> get stream => _outputStreamController.stream;
-
   ForecastBloc({required ForecastUseCaseGetAll forecastUseCase})
-      : _forecastUseCase = forecastUseCase {
-    _outputStreamController.add(ForecastInitialState());
-    _inputStreamController.stream.listen(_mapEventToState);
-  }
-
-  Future<void> _mapEventToState(ForecastEvent event) async {
-    if (event is ForecastLoadEvent) {
+      : _forecastUseCase = forecastUseCase,
+        super(ForecastInitialState()) {
+    on<ForecastLoadEvent>((event, emit) async {
       try {
-        _outputStreamController.add(ForecastLoadState());
+        emit(ForecastLoadState());
         final latLng = event.latLng;
         final units = event.units;
         final forecast =
             await _forecastUseCase.exec(latLng: latLng, units: units);
-        _outputStreamController.add(ForecastSuccessState(forecast: forecast));
+        emit(ForecastSuccessState(forecast: forecast));
       } catch (e) {
-        _outputStreamController.add(ForecastErrorState(message: e.toString()));
+        emit(ForecastErrorState(message: e.toString()));
       }
-    }
-  }
-
-  void dispose() {
-    _inputStreamController.close();
-    _outputStreamController.close();
+    });
   }
 }

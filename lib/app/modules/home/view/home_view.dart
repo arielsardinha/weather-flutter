@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/app/components/buttons/custon_text_form_field.dart';
@@ -58,11 +59,11 @@ class _HomeViewState extends State<HomeView>
           await determinePosition().whenComplete(() => POSITION_DEFAULT_ERRO);
       if (position == POSITION_DEFAULT_ERRO) return;
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.weatherBloc.input.add(WeatherLoadEvent(
+      widget.weatherBloc.add(WeatherLoadEvent(
         latLong: latLng,
         units: Temperature.temperature.value.name,
       ));
-      widget.forecastBloc.input.add(ForecastLoadEvent(
+      widget.forecastBloc.add(ForecastLoadEvent(
         latLng: latLng,
         units: Temperature.temperature.value.name,
       ));
@@ -74,9 +75,9 @@ class _HomeViewState extends State<HomeView>
     try {
       final position = await determinePosition();
       final latLng = LatLng(lat: position.latitude, lng: position.longitude);
-      widget.weatherBloc.input.add(WeatherLoadEvent(
+      widget.weatherBloc.add(WeatherLoadEvent(
           latLong: latLng, units: Temperature.temperature.value.name));
-      widget.forecastBloc.input.add(ForecastLoadEvent(
+      widget.forecastBloc.add(ForecastLoadEvent(
         latLng: latLng,
         units: Temperature.temperature.value.name,
       ));
@@ -92,8 +93,8 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void dispose() {
-    widget.weatherBloc.dispose();
-    widget.forecastBloc.dispose();
+    widget.weatherBloc.close();
+    widget.forecastBloc.close();
     super.dispose();
   }
 
@@ -104,13 +105,13 @@ class _HomeViewState extends State<HomeView>
     return Scaffold(
       key: _scaffoldKey,
       drawer: const CustonDrawer(),
-      body: StreamBuilder<WeatherState>(
-        stream: widget.weatherBloc.stream,
-        builder: (context, snapshot) {
+      body: BlocBuilder<WeatherBloc, WeatherState>(
+        bloc: widget.weatherBloc,
+        builder: (context, state) {
           return Stack(
             children: [
-              if (snapshot.data is WeatherSuccessState)
-                switch (snapshot.data) {
+              if (state is WeatherSuccessState)
+                switch (state) {
                   WeatherSuccessState(weather: final weather) => Image.network(
                       'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},landscape',
                       fit: BoxFit.cover,
@@ -118,7 +119,6 @@ class _HomeViewState extends State<HomeView>
                       width: double.infinity,
                       alignment: Alignment.center,
                     ),
-                  _ => const SizedBox()
                 },
               SafeArea(
                 child: ListView(
@@ -133,17 +133,16 @@ class _HomeViewState extends State<HomeView>
                         controller: textCtl,
                         onChanged: (value) {
                           debounce(() {
-                            widget.weatherBloc.input.add(WeatherLoadEvent(
+                            widget.weatherBloc.add(WeatherLoadEvent(
                               message: value,
                               units: Temperature.temperature.value.name,
                             ));
-                            if (snapshot.data is WeatherSuccessState) {
-                              final weather =
-                                  snapshot.data as WeatherSuccessState;
+                            if (state is WeatherSuccessState) {
+                              final weather = state;
                               final LatLng latLng = LatLng(
                                   lat: weather.weather.coord.lat,
                                   lng: weather.weather.coord.lon);
-                              widget.forecastBloc.input.add(ForecastLoadEvent(
+                              widget.forecastBloc.add(ForecastLoadEvent(
                                 latLng: latLng,
                                 units: Temperature.temperature.value.name,
                               ));
@@ -187,7 +186,7 @@ class _HomeViewState extends State<HomeView>
                     const SizedBox(
                       height: 16,
                     ),
-                    switch (snapshot.data) {
+                    switch (state) {
                       WeatherErroState(message: final err) =>
                         InfoText(msg: err),
                       WeatherInitialState() =>
@@ -198,10 +197,10 @@ class _HomeViewState extends State<HomeView>
                           child: CircularProgressIndicator.adaptive(),
                         ),
                     },
-                    StreamBuilder<ForecastState>(
-                      stream: widget.forecastBloc.stream,
-                      builder: (context, snapshot) {
-                        return switch (snapshot.data) {
+                    BlocBuilder<ForecastBloc, ForecastState>(
+                      bloc: widget.forecastBloc,
+                      builder: (context, state) {
+                        return switch (state) {
                           ForecastErrorState(message: final err) =>
                             InfoText(msg: err),
                           ForecastSuccessState(forecast: final forecast) =>
