@@ -62,5 +62,3 @@ Para executar este projeto Flutter no ambiente local, siga os seguintes passos:
 
     Isso irá iniciar o aplicativo Flutter no seu dispositivo.
 
-**Nota: Substitua "your-logo.png" e "your-company" pelos respectivos links da sua imagem de logotipo e do link do GitHub da sua empresa.**
-
