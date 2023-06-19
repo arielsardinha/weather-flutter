@@ -360,7 +360,7 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
           ),
           const SizedBox(height: 16),
           Text(
-            "${weather.main.temp?.toStringAsFixed(1) ?? '-'}°C",
+            "${weather.main.temp?.toStringAsFixed(1) ?? '-'}${Temperature.symbol()}",
             style: theme.textTheme.displayMedium,
           ),
           const SizedBox(height: 8),
@@ -369,12 +369,12 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${'min'.i18n()}: ${weather.main.tempMin?.toStringAsFixed(1)}°C",
+                  "${'min'.i18n()}: ${weather.main.tempMin?.toStringAsFixed(1)}${Temperature.symbol()}",
                   style: theme.textTheme.titleMedium,
                 ),
                 const SizedBox(width: 16),
                 Text(
-                  "${'max'.i18n()}: ${weather.main.tempMax?.toStringAsFixed(1)}°C",
+                  "${'max'.i18n()}: ${weather.main.tempMax?.toStringAsFixed(1)}${Temperature.symbol()}",
                   style: theme.textTheme.titleMedium,
                 ),
               ],
@@ -435,14 +435,14 @@ class InfoForecast extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${forecastItem.main.tempMin.toStringAsFixed(0)}°',
+                      '${forecastItem.main.tempMin.toStringAsFixed(0)}${Temperature.symbol()}',
                       style: theme.textTheme.titleSmall,
                     ),
                     const SizedBox(
                       width: 8,
                     ),
                     Text(
-                      '${forecastItem.main.tempMax.toStringAsFixed(0)}°',
+                      '${forecastItem.main.tempMax.toStringAsFixed(0)}${Temperature.symbol()}',
                       style: theme.textTheme.titleSmall,
                     ),
                   ],
