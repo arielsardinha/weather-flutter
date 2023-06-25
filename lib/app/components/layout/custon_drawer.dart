@@ -30,6 +30,7 @@ class _CustonDrawerState extends State<CustonDrawer> {
         'country_code': locale.countryCode
       },
     );
+    setState(() {});
   }
 
   void setTemperature(TemperatureEnum temperature) {
@@ -38,6 +39,7 @@ class _CustonDrawerState extends State<CustonDrawer> {
       storage: StorageEnum.temperatureUnit,
       data: {'name': temperature.name},
     );
+    setState(() {});
   }
 
   @override
