@@ -35,8 +35,8 @@ class _HomeViewState extends State<HomeView>
   final textCtl = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  String getDayPart() {
-    var hour = DateTime.now().hour;
+  String getDayPart(Weather weather) {
+    var hour = weather.dateTime.hour;
     if (hour < 6) {
       return "night";
     } else if (hour < 12) {
@@ -113,7 +113,7 @@ class _HomeViewState extends State<HomeView>
               if (state is WeatherSuccessState)
                 switch (state) {
                   WeatherSuccessState(weather: final weather) => Image.network(
-                      'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart()},landscape',
+                      'https://source.unsplash.com/featured/?${weather.weather[0].description},${getDayPart(weather)},landscape',
                       fit: BoxFit.cover,
                       height: double.infinity,
                       width: double.infinity,
@@ -248,7 +248,6 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final today = DateTime.now();
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -267,7 +266,7 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                formatDateFromDateTime(today),
+                formatDateFromDateTime(weather.dateTime),
                 style: theme.textTheme.titleMedium,
               ),
               if (weather.sys.country != null)

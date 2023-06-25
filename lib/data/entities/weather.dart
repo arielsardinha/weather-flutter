@@ -6,6 +6,8 @@ class Weather {
   final Sys sys;
   final String name;
   final Coord coord;
+  final int _dt;
+  final int _timezone;
 
   Weather({
     required this.weather,
@@ -15,7 +17,11 @@ class Weather {
     required this.name,
     required int visibility,
     required this.coord,
-  }) : _visibility = visibility;
+    required int dt,
+    required int timezone,
+  })  : _visibility = visibility,
+        _dt = dt,
+        _timezone = timezone;
 
   String get visibility {
     if (_visibility >= 10000) {
@@ -41,6 +47,9 @@ class Weather {
     }
   }
 
+  DateTime get dateTime =>
+      DateTime.fromMillisecondsSinceEpoch(_dt * 1000 + _timezone * 1000);
+
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         weather: List<WeatherElement>.from(
             json["weather"].map((x) => WeatherElement.fromJson(x))),
@@ -50,6 +59,8 @@ class Weather {
         name: json["name"],
         visibility: json["visibility"],
         coord: Coord.fromJson(json["coord"]),
+        dt: json['dt'],
+        timezone: json['timezone'],
       );
 
   Map<String, dynamic> toJson() => {
