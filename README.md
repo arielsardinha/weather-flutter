@@ -4,6 +4,7 @@
 Notei que vocês dão grande ênfase ao BloC. Por isso, desenvolvi o projeto com e sem o uso do pacote, os quais estão em branches distintas.
 
 Com o pacote: flutter_bloc -> [Link para o branch main](https://github.com/arielsardinha/weather-flutter/tree/main)
+
 Sem o pacote: padrão de projeto BloC -> [Link para o branch developer](https://github.com/arielsardinha/weather-flutter/tree/developer)
 
 
@@ -55,7 +56,7 @@ Para executar este projeto Flutter no ambiente local, siga os seguintes passos:
     Navegue até o diretório do projeto clonado e execute o seguinte comando para instalar todas as dependências necessárias listadas no arquivo `pubspec.yaml`:
 
     ```bash
-    cd your-repository
+    cd weather-flutter
     flutter pub get
     ```
 
