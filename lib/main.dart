@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
     return AnimatedBuilder(
       animation: Listenable.merge([Themes.theme, Localization.locale]),
       builder: (context, snapshot) {
-        return MaterialApp(
+        return MaterialApp.router(
           title: 'weather',
           debugShowCheckedModeBanner: false,
           localizationsDelegates: [
@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           theme: Themes.themeDataLight,
           darkTheme: Themes.themeDataDark,
           themeMode: Themes.theme.value,
-          routes: AppRoutes.routes,
+          routerConfig: AppRoutes.routesConfig,
         );
       },
     );

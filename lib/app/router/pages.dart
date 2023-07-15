@@ -1,15 +1,87 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 import 'package:open_weather_map/app/modules/home/factory/home_factory.dart';
 import 'package:open_weather_map/app/modules/home/view/home_view.dart';
 import 'package:open_weather_map/app/modules/splash/view/splash_view.dart';
+import 'package:open_weather_map/app/router/navigator_config.dart';
 import 'package:open_weather_map/app/router/routers.dart';
 
+class MyNavigatorObserver extends NavigatorObserver {
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    super.didPush(route, previousRoute);
+    log('New route pushed: ${route.settings.name}');
+  }
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    super.didPop(route, previousRoute);
+    log('Returning to route: ${previousRoute?.settings.name}');
+  }
+
+  @override
+  void didRemove(Route route, Route? previousRoute) {
+    super.didRemove(route, previousRoute);
+    log('Route removed: ${route.settings.name}');
+  }
+}
+
 sealed class AppRoutes {
-  static final routes = <String, Widget Function(BuildContext)>{
-    Routes.HOME: (context) => HomeView(
-          weatherBloc: HomeFactory.weatherBloc,
-          forecastBloc: HomeFactory.forecastBloc,
-        ),
-    Routes.SPLASH: (context) => const SplashView(),
-  };
+  static final routesConfig = GoRouter(
+    observers: [MyNavigatorObserver()],
+    routes: [
+      GoRoute(
+        name: Routes.HOME,
+        path: Routes.HOME,
+        // redirect: (BuildContext context, GoRouterState state) async {
+        //   final result = await Future.delayed(
+        //     const Duration(seconds: 1),
+        //     () => true,
+        //   );
+        //   if (result) {
+        //     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         const SnackBar(
+        //           content: Text('Usuário não autenticao'),
+        //         ),
+        //       );
+        //     });
+        //     return '/signin';
+        //   } else {
+        //     return null;
+        //   }
+        // },
+        builder: (context, state) {
+          return HomeView(
+            weatherBloc: HomeFactory.weatherBloc,
+            forecastBloc: HomeFactory.forecastBloc,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.SPLASH,
+        builder: (context, state) {
+          return const SplashView();
+        },
+      ),
+      GoRoute(
+        path: '/signin',
+        builder: (context, state) {
+          return Scaffold(
+            body: Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  CustonNavigator.pushNamed(context, Routes.SPLASH);
+                },
+                child: const Text('data'),
+              ),
+            ),
+          );
+        },
+      ),
+    ],
+  );
 }

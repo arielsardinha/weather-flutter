@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_weather_map/app/router/navigator_config.dart';
 import 'package:open_weather_map/app/router/routers.dart';
 import 'package:open_weather_map/data/infra/storage/storage.dart';
 import 'package:open_weather_map/data/utils/temperature/temperature.dart';
@@ -47,7 +48,7 @@ class _SplashViewState extends State<SplashView> {
         Temperature.setTemperature(temperature);
       }
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        Navigator.pushNamed(
+        CustonNavigator.pushNamed(
           context,
           Routes.HOME,
         );
