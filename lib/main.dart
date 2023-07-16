@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:open_weather_map/app/router/pages.dart';
 import 'package:localization/localization.dart';
+import 'package:open_weather_map/data/utils/initial_providers/initial_providers.dart';
 import 'package:open_weather_map/themes/theme.dart';
 import 'package:open_weather_map/i18n/localization.dart';
 
 void main() async {
+  InitialProvider.init();
   runApp(const MyApp());
 }
 
