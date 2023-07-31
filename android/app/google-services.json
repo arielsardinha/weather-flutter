@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "304559835781",
+    "project_id": "weather-c2a60",
+    "storage_bucket": "weather-c2a60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304559835781:android:cd47ad0de3770a35edf7ec",
+        "android_client_info": {
+          "package_name": "com.openWeatherMap.open_weather_map"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "304559835781-qega4fm22tl9eh3f6i2f33b941ea47sc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaUaLd41FD3cZvXHlEi4-Bb1jVOHkrRLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "304559835781-qega4fm22tl9eh3f6i2f33b941ea47sc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
