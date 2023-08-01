@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:open_weather_map/app/router/pages.dart';
 import 'package:localization/localization.dart';
+import 'package:open_weather_map/data/utils/firebase_messaging/firebase_messaging.dart';
 import 'package:open_weather_map/data/utils/initial_providers/initial_providers.dart';
 import 'package:open_weather_map/themes/theme.dart';
 import 'package:open_weather_map/i18n/localization.dart';
@@ -9,11 +10,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   InitialProvider.init();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseMessagingService.inicialize();
+  await FirebaseMessagingService.getTokenFirebase();
   runApp(const MyApp());
 }
 
