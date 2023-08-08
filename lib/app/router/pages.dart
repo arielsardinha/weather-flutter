@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:open_weather_map/app/modules/home/factory/home_factory.dart';
 import 'package:open_weather_map/app/modules/home/view/home_view.dart';
 import 'package:open_weather_map/app/modules/splash/view/splash_view.dart';
 import 'package:open_weather_map/app/router/navigator_config.dart';
@@ -57,7 +56,7 @@ sealed class AppRoutes {
         // },
 
         builder: (context, state) {
-          HomeFactory.init();
+         
           return HomeView(
             forecastBloc: getIt<ForecastBloc>(),
             weatherBloc: getIt<WeatherBloc>(),
