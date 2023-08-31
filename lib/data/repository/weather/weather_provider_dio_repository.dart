@@ -8,10 +8,10 @@ import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
 import 'package:open_weather_map/data/repository/weather/weather_repository.dart';
 
-final class RepositoryWeather implements WeatherRepositoryImpl {
+final class RepositoryWeatherImpl implements WeatherRepository {
   final HttpImpl _httpImpl;
 
-  RepositoryWeather({required HttpImpl httpImpl}) : _httpImpl = httpImpl;
+  RepositoryWeatherImpl({required HttpImpl httpImpl}) : _httpImpl = httpImpl;
 
   @override
   Future<Weather> getAll({

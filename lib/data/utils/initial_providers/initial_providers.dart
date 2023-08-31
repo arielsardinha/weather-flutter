@@ -9,8 +9,8 @@ final getIt = GetIt.instance;
 sealed class InitialProvider {
   static void init() {
     getIt.registerSingleton(ProviderOpenweathermap());
-    getIt.registerLazySingleton<RepositoryWeather>(
-        () => RepositoryWeather(httpImpl: getIt<ProviderOpenweathermap>()));
+    getIt.registerLazySingleton<RepositoryWeatherImpl>(
+        () => RepositoryWeatherImpl(httpImpl: getIt<ProviderOpenweathermap>()));
 
     HomeFactory.init();
   }
