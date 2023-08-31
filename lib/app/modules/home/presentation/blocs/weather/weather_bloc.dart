@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/weather/weather_events.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/weather/weather_states.dart';
-import 'package:open_weather_map/data/use_cases/weather/weather_use_get_all.dart';
+import 'package:open_weather_map/app/modules/home/domain/use_cases/weather/weather_use_get_all.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final WeatherGetAll _weatherGetAll;
