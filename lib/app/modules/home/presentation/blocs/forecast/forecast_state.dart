@@ -1,4 +1,4 @@
-import 'package:open_weather_map/data/entities/forecast.dart';
+import 'package:open_weather_map/app/modules/home/domain/entities/forecast.dart';
 
 abstract class ForecastState {}
 

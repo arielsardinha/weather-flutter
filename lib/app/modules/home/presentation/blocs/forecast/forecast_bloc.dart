@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_weather_map/data/blocs/forecast/forecast_event.dart';
-import 'package:open_weather_map/data/blocs/forecast/forecast_state.dart';
+import 'package:open_weather_map/app/modules/home/presentation/blocs/forecast/forecast_event.dart';
+import 'package:open_weather_map/app/modules/home/presentation/blocs/forecast/forecast_state.dart';
 import 'package:open_weather_map/data/use_cases/forecast/forecast_use_case_get_all.dart';
 
 class ForecastBloc extends Bloc<ForecastEvent, ForecastState> {

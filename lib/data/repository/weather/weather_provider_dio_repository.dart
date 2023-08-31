@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:localization/localization.dart';
-import 'package:open_weather_map/data/entities/forecast.dart';
-import 'package:open_weather_map/data/entities/weather.dart';
+import 'package:open_weather_map/app/modules/home/domain/entities/forecast.dart';
+import 'package:open_weather_map/app/modules/home/domain/entities/weather.dart';
 import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
 import 'package:open_weather_map/data/repository/weather/weather_repository.dart';

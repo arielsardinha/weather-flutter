@@ -1,12 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:open_weather_map/app/modules/home/view/home_view.dart';
+import 'package:open_weather_map/app/modules/home/presentation/view/home_view.dart';
 import 'package:open_weather_map/app/modules/splash/view/splash_view.dart';
 import 'package:open_weather_map/app/router/navigator_config.dart';
 import 'package:open_weather_map/app/router/routers.dart';
-import 'package:open_weather_map/data/blocs/forecast/forecast_bloc.dart';
-import 'package:open_weather_map/data/blocs/weather/weather_bloc.dart';
+import 'package:open_weather_map/app/modules/home/presentation/blocs/forecast/forecast_bloc.dart';
+import 'package:open_weather_map/app/modules/home/presentation/blocs/weather/weather_bloc.dart';
 import 'package:open_weather_map/data/utils/initial_providers/initial_providers.dart';
 
 class MyNavigatorObserver extends NavigatorObserver {
