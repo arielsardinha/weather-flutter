@@ -13,7 +13,7 @@ final class WeatherLoadState extends WeatherState {
 }
 
 final class WeatherSuccessState extends WeatherState {
-  final Weather weather;
+  final WeatherEntity weather;
   WeatherSuccessState({required this.weather});
 }
 

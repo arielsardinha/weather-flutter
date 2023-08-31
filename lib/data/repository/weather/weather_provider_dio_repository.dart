@@ -1,11 +1,10 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:localization/localization.dart';
-import 'package:open_weather_map/app/modules/home/domain/entities/forecast.dart';
-import 'package:open_weather_map/app/modules/home/domain/entities/weather.dart';
 import 'package:open_weather_map/data/infra/http/http.dart';
 import 'package:open_weather_map/data/infra/http/request.dart';
+import 'package:open_weather_map/data/repository/weather/models/forecast.dart';
+import 'package:open_weather_map/data/repository/weather/models/weather.dart';
 import 'package:open_weather_map/data/repository/weather/weather_repository.dart';
 
 final class RepositoryWeatherImpl implements WeatherRepository {
@@ -14,7 +13,7 @@ final class RepositoryWeatherImpl implements WeatherRepository {
   RepositoryWeatherImpl({required HttpImpl httpImpl}) : _httpImpl = httpImpl;
 
   @override
-  Future<Weather> getAll({
+  Future<WeatherModel> getAll({
     String? search,
     String? lat,
     String? long,
@@ -32,7 +31,7 @@ final class RepositoryWeatherImpl implements WeatherRepository {
       final response =
           await _httpImpl.get(Request(path: '/weather', query: query));
 
-      final weather = Weather.fromJson(response.data);
+      final weather = WeatherModel.fromJson(response.data);
 
       return weather;
     } on DioException catch (_) {
@@ -44,7 +43,7 @@ final class RepositoryWeatherImpl implements WeatherRepository {
   }
 
   @override
-  Future<Forecast> getForecast({
+  Future<ForecastModel> getForecast({
     String? lat,
     String? long,
     required String units,
@@ -58,7 +57,7 @@ final class RepositoryWeatherImpl implements WeatherRepository {
       final response =
           await _httpImpl.get(Request(path: '/forecast', query: query));
 
-      return Forecast.fromJson(
+      return ForecastModel.fromJson(
           response.data); // Convert response to Forecast entity
     } on DioException catch (_) {
       throw 'Não foi possível encontrar a previsão do tempo para esta localização.';

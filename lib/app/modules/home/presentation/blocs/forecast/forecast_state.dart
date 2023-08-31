@@ -7,7 +7,7 @@ class ForecastInitialState extends ForecastState {}
 class ForecastLoadState extends ForecastState {}
 
 class ForecastSuccessState extends ForecastState {
-  final Forecast forecast;
+  final ForecastEntity forecast;
 
   ForecastSuccessState({required this.forecast});
 }

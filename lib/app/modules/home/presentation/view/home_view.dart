@@ -4,15 +4,15 @@ import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:open_weather_map/app/components/buttons/custon_text_form_field.dart';
 import 'package:open_weather_map/app/components/layout/custon_drawer.dart';
+import 'package:open_weather_map/app/modules/home/domain/entities/forecast.dart';
+import 'package:open_weather_map/app/modules/home/domain/entities/weather.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/forecast/forecast_bloc.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/forecast/forecast_event.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/forecast/forecast_state.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/weather/weather_bloc.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/weather/weather_events.dart';
 import 'package:open_weather_map/app/modules/home/presentation/blocs/weather/weather_states.dart';
-import 'package:open_weather_map/app/modules/home/domain/entities/forecast.dart';
 import 'package:open_weather_map/app/modules/home/domain/entities/lat_lng.dart';
-import 'package:open_weather_map/app/modules/home/domain/entities/weather.dart';
 import 'package:open_weather_map/data/utils/mixins/date_formate.dart';
 import 'package:open_weather_map/data/utils/mixins/debounce_mixin.dart';
 import 'package:open_weather_map/data/utils/mixins/geolocator_mixin.dart';
@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView>
   final textCtl = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  String getDayPart(Weather weather) {
+  String getDayPart(WeatherEntity weather) {
     var hour = weather.dateTime.hour;
     if (hour < 6) {
       return "night";
@@ -82,12 +82,14 @@ class _HomeViewState extends State<HomeView>
         units: Temperature.temperature.value.name,
       ));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('device_location_error'.i18n()),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('device_location_error'.i18n()),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -234,7 +236,7 @@ class InfoText extends StatelessWidget {
 }
 
 class InfoWeather extends StatelessWidget with DateFormatMixin {
-  final Weather weather;
+  final WeatherEntity weather;
 
   const InfoWeather({Key? key, required this.weather}) : super(key: key);
 
@@ -377,7 +379,7 @@ class InfoWeather extends StatelessWidget with DateFormatMixin {
 }
 
 class InfoForecast extends StatelessWidget {
-  final Forecast forecast;
+  final ForecastEntity forecast;
 
   const InfoForecast({Key? key, required this.forecast}) : super(key: key);
 

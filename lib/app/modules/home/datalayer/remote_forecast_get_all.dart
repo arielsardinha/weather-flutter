@@ -1,3 +1,4 @@
+import 'package:open_weather_map/app/modules/home/datalayer/models/remote_forecast.dart';
 import 'package:open_weather_map/app/modules/home/domain/entities/forecast.dart';
 import 'package:open_weather_map/app/modules/home/domain/entities/lat_lng.dart';
 import 'package:open_weather_map/app/modules/home/domain/use_cases/forecast/forecast_use_case_get_all.dart';
@@ -10,12 +11,16 @@ final class RemoteForecastGetAll implements ForecastUseCaseGetAll {
       : _repositoryWeather = repositoryWeather;
 
   @override
-  Future<Forecast> exec(
-      {String? search, LatLng? latLng, required String units}) {
-    return _repositoryWeather.getForecast(
+  Future<ForecastEntity> exec(
+      {String? search, LatLng? latLng, required String units}) async {
+    final forecastModel = await _repositoryWeather.getForecast(
       lat: latLng?.lat.toString(),
       long: latLng?.lng.toString(),
       units: units,
     );
+
+    final remoteForecast = RemoteForecast.fromModel(forecastModel);
+
+    return remoteForecast.toEntity();
   }
 }
